@@ -119,5 +119,14 @@ export const experiences = [
   }
 ];
 
-// Keep the structure ready; add objects later when achievements are available.
-export const awards = [];
+export const awards = [
+  {
+    title: 'Python (Basic)',
+    organization: 'HackerRank',
+    year: '2024',
+    earnedOn: '24 Dec 2024',
+    credentialId: '9899F4144171',
+    description: 'Passed the HackerRank skill certification test for Python (Basic).',
+    imageUrl: '/download.png'
+  }
+];
