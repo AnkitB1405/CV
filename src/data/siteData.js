@@ -1,30 +1,26 @@
-// Centralized content model for easy CV updates without touching UI components.
+// Centralized content model for easy portfolio updates without touching UI components.
 export const profile = {
   name: 'Ankit Bembalgi',
-  role: 'Cybersecurity and AI Enthusiast',
+  role: 'Cybersecurity & AI Enthusiast',
   location: 'India',
   tagline:
-    'Exploring systems, security, and intelligent technologies through practical, hands-on experimentation.',
+    'Cybersecurity and AI enthusiast exploring systems through CTF challenges, homelab experimentation, and practical hands-on learning. I enjoy building, breaking, and understanding systems at a deeper level.',
   aboutParagraphs: [
-    'I am a cybersecurity and AI enthusiast currently pursuing a B.Tech in Computer Science with a specialization in Artificial Intelligence and Machine Learning at PES University. I actively explore systems, security, and emerging technologies through hands-on experimentation.',
-    'I maintain an active homelab environment where I experiment with networking, containerization, and self-hosted tools. I enjoy solving Capture The Flag (CTF) cybersecurity challenges and exploring practical aspects of system security.',
-    'I am also a member of LAYER8, the official cybersecurity club of PES University, where I collaborate with peers on security-related activities and learning initiatives.'
+    'I am a Computer Science student at PES University with a strong interest in cybersecurity, systems engineering, and artificial intelligence.',
+    'Much of my learning comes from experimentation. I maintain an active homelab environment where I deploy self-hosted services, experiment with containers and automation tools, and test new technologies in a controlled environment.',
+    'I enjoy solving Capture The Flag (CTF) challenges which allow me to explore vulnerabilities, reverse engineering problems, and real-world security concepts.',
+    'I am also a member of LAYER8, the official cybersecurity club of PES University.'
   ],
   expertise: [
-    'Cybersecurity learning through CTF and practical labs',
-    'AI and emerging technology exploration',
-    'Linux-based development and terminal-driven workflows',
-    'Systems experimentation with containers and self-hosting'
+    'Offensive Security & CTF Challenges',
+    'Homelab Infrastructure Engineering',
+    'Linux Systems & Automation',
+    'Local AI & Self-Hosted Tools'
   ],
   email: 'ankitbembalgi@gmail.com',
   github: 'https://github.com/AnkitB1405',
   linkedin: 'https://www.linkedin.com/in/ankit-bembalgi-b65b55297/',
-  resumeUrl: '/resume.pdf',
-  heroHighlights: [
-    'Offensive Security & CTF Challenges',
-    'Homelab Infrastructure Engineering',
-    'Linux Systems & Automation'
-  ]
+  resumeUrl: '/resume.pdf'
 };
 
 export const education = {
@@ -35,63 +31,102 @@ export const education = {
 };
 
 export const skills = {
-  programmingLanguages: ['Python', 'C', 'Bash / Shell', 'Powershell'],
+  programmingLanguages: ['Python', 'C', 'JavaScript', 'Bash / Shell'],
   webTechnologies: ['HTML5', 'JavaScript'],
-  toolsAndTechnologies: ['Docker', 'Git', 'Linux', 'VS Code'],
-  otherTechnicalInterests: [
-    'Homelab experimentation',
-    'Linux environments, terminal workflows, and system automation',
-    'Networking'
-  ]
+  systemsAndInfrastructure: ['Linux', 'Docker', 'Networking', 'Self-hosted services', 'Containerization'],
+  developerTools: ['Git', 'VS Code', 'Docker']
 };
 
 export const projects = [
   {
+    slug: 'homelab-infrastructure',
     title: 'HomeLab',
+    detailTitle: 'Homelab Infrastructure',
     description:
-      'Personal homelab environment for hands-on experimentation with self-hosting, virtualization, containerized services, and networking workflows. It serves as a controlled sandbox to test tools, practice system administration, and automate deployments while keeping services stable through container isolation.',
+      'Personal homelab environment for experimenting with self-hosted services, virtualization, containers, and practical infrastructure workflows in a controlled sandbox.',
+    problem:
+      'I wanted a space where I could safely experiment with systems, networking configurations, and deployment workflows without affecting my main environment.',
     keyFeatures: [
-      'Proxmox-based virtualization for efficient resource management.',
-      'Containerized services for testing infrastructure and self-hosted tools.',
-      'Automation workflows using n8n in dedicated containers.',
-      'Environment for locally hosted AI models and developer tooling.'
+      'Virtualized infrastructure using Proxmox.',
+      'Containerized applications for experimentation and self-hosted services.',
+      'Workflow automation using n8n.',
+      'Environment for testing locally hosted AI models.'
     ],
-    techStack: ['Linux', 'Docker', 'Networking'],
-    github: '',
-    demo: ''
+    technologies: ['Proxmox', 'Docker', 'Linux', 'Self-hosted services'],
+    learned: [
+      'Container orchestration fundamentals.',
+      'Infrastructure organization.',
+      'Service isolation and system stability.',
+      'Experimentation with self-hosted tools.'
+    ],
+    github: ''
   },
   {
+    slug: 'telemetry-collection-system',
     title: 'Telemetry Collection System',
     status: 'in-progress',
     statusLabel: 'In Progress',
     description:
-      'Distributed telemetry system designed to collect and analyze system data from multiple clients through a centralized monitoring server.',
+      'Distributed telemetry platform for collecting client-side system data, analyzing network behavior, and building toward centralized observability.',
+    problem:
+      'I wanted to understand how telemetry pipelines work end to end, from lightweight collection on distributed clients to secure transport and centralized analysis.',
     keyFeatures: [
-      'Built client-server architecture where multiple clients transmit telemetry data to a central server using UDP communication.',
-      'Implemented telemetry ingestion and processing on the server to aggregate data from distributed sources.',
-      'Designed support for secure communication using TLS, enabling encrypted telemetry exchange between clients and server.',
-      'Implemented packet loss monitoring and telemetry analysis to observe network reliability and system behavior.',
-      'Developing a dashboard interface for visualization and monitoring of collected telemetry data.'
+      'Client-server architecture for collecting telemetry from multiple endpoints.',
+      'UDP-based ingestion pipeline for lightweight data transfer.',
+      'TLS support for encrypted telemetry exchange.',
+      'Packet loss monitoring and telemetry analysis for network visibility.',
+      'Dashboard-oriented design for future visualization.'
     ],
-    techStack: ['Client-Server Architecture', 'UDP', 'TLS', 'Telemetry Analysis', 'Dashboard'],
-    github: '',
-    demo: ''
+    technologies: ['Client-Server Architecture', 'UDP', 'TLS', 'Telemetry Analysis', 'Dashboard'],
+    learned: [
+      'Tradeoffs between transport efficiency and reliability.',
+      'How secure channels affect distributed system design.',
+      'Telemetry aggregation patterns for monitoring workflows.',
+      'Incremental development of observability-focused systems.'
+    ],
+    github: ''
   },
   {
+    slug: 'active-cyber-deception',
     title: 'Active Cyber Deception',
     status: 'in-progress',
     statusLabel: 'In Progress',
     description:
-      'Honeypot-based cybersecurity system designed to capture and analyze attacker behavior and surface vulnerabilities and potential attack paths through a Wazuh dashboard.',
+      'Honeypot-driven security project focused on capturing attacker activity, surfacing adversary behavior, and feeding analysis into a Wazuh-based visibility layer.',
+    problem:
+      'I wanted to explore how deception systems can be used to observe attacker behavior safely while producing useful telemetry for analysis and alerting.',
     keyFeatures: [
-      'Deploys honeypot services to attract and log malicious activity.',
-      'Collects and analyzes attack telemetry from adversary interactions.',
-      'Integrates with Wazuh SIEM for visualization, alerting, and analysis.',
-      'Helps identify vulnerabilities and potential exploitation paths.'
+      'Honeypot services designed to attract and log malicious interactions.',
+      'Attack telemetry collection from adversary activity.',
+      'Wazuh integration for visualization, analysis, and alerting.',
+      'Security-focused environment for identifying vulnerabilities and attack paths.'
     ],
-    techStack: ['Cybersecurity', 'Honeypot', 'Wazuh SIEM', 'Telemetry Analysis'],
-    github: '',
-    demo: ''
+    technologies: ['Cybersecurity', 'Honeypot', 'Wazuh SIEM', 'Telemetry Analysis'],
+    learned: [
+      'How deceptive infrastructure can improve security visibility.',
+      'Methods for analyzing attacker behavior using telemetry.',
+      'Practical considerations when integrating a SIEM into a lab setup.',
+      'How to design safer environments for adversarial experimentation.'
+    ],
+    github: ''
+  }
+];
+
+export const experiments = [
+  {
+    title: 'CTF Writeups',
+    description:
+      'Structured notes and future walkthroughs covering web, reverse engineering, binary, and forensics challenges.'
+  },
+  {
+    title: 'Homelab Experiments',
+    description:
+      'Short logs of infrastructure changes, service deployments, networking tests, and self-hosted tooling experiments.'
+  },
+  {
+    title: 'Security Notes',
+    description:
+      'A growing knowledge base for concepts, tooling, vulnerabilities, and lessons from hands-on security practice.'
   }
 ];
 
@@ -130,3 +165,16 @@ export const awards = [
     imageUrl: '/download.png'
   }
 ];
+
+export const seo = {
+  home: {
+    title: 'Ankit Bembalgi | Cybersecurity & AI Enthusiast',
+    description:
+      'Portfolio website of Ankit Bembalgi showcasing projects, homelab experiments, cybersecurity interests, and technical work.'
+  },
+  projects: {
+    title: 'Projects | Ankit Bembalgi',
+    description:
+      'Detailed project breakdowns covering homelab infrastructure, telemetry systems, cybersecurity experimentation, and technical exploration.'
+  }
+};

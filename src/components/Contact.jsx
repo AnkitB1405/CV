@@ -1,47 +1,58 @@
 import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa6';
 import SectionTitle from './SectionTitle';
+import Reveal from './Reveal';
 import { profile } from '../data/siteData';
+
+const contactLinks = [
+  {
+    label: 'GitHub',
+    href: profile.github,
+    icon: FaGithub,
+    external: true
+  },
+  {
+    label: 'LinkedIn',
+    href: profile.linkedin,
+    icon: FaLinkedin,
+    external: true
+  },
+  {
+    label: 'Email',
+    href: `mailto:${profile.email}`,
+    icon: FaEnvelope
+  }
+];
 
 const Contact = () => {
   return (
     <section id="contact" className="section-shell">
-      <SectionTitle
-        eyebrow="Contact"
-        title="Let us build something exceptional"
-        description="Reach out for collaborations, internships, freelance work, or fun and interesting cybersecurity projects."
-      />
+      <Reveal>
+        <SectionTitle
+          eyebrow="Contact"
+          title="Let us connect"
+          description="If you'd like to collaborate, discuss projects, or talk about cybersecurity, feel free to reach out."
+        />
+      </Reveal>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <a
-          href={`mailto:${profile.email}`}
-          className="contact-tile"
-          aria-label="Send email"
-        >
-          <FaEnvelope aria-hidden="true" className="text-xl text-cyan" />
-          <span>{profile.email}</span>
-        </a>
+        {contactLinks.map((item, index) => {
+          const Icon = item.icon;
 
-        <a
-          href={profile.github}
-          target="_blank"
-          rel="noreferrer"
-          className="contact-tile"
-          aria-label="Open GitHub profile"
-        >
-          <FaGithub aria-hidden="true" className="text-xl text-cyan" />
-          <span>GitHub</span>
-        </a>
-
-        <a
-          href={profile.linkedin}
-          target="_blank"
-          rel="noreferrer"
-          className="contact-tile"
-          aria-label="Open LinkedIn profile"
-        >
-          <FaLinkedin aria-hidden="true" className="text-xl text-cyan" />
-          <span>LinkedIn</span>
-        </a>
+          return (
+            <Reveal key={item.label} delay={index * 80}>
+              <a
+                href={item.href}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noreferrer' : undefined}
+                className="contact-tile"
+                aria-label={item.label}
+              >
+                <Icon aria-hidden="true" className="text-xl text-cyan" />
+                <span>{item.label === 'Email' ? profile.email : item.label}</span>
+              </a>
+            </Reveal>
+          );
+        })}
       </div>
     </section>
   );
