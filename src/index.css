@@ -28,6 +28,19 @@ body {
   padding-block: 4.5rem;
 }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 680ms ease,
+    transform 680ms ease;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .contact-tile {
   display: flex;
   align-items: center;
@@ -47,6 +60,23 @@ body {
   border-color: rgba(78, 244, 255, 0.58);
   box-shadow: 0 0 24px rgba(78, 244, 255, 0.2);
   outline: none;
+}
+
+.architecture-node {
+  position: relative;
+}
+
+.architecture-node::after {
+  content: '->';
+  position: absolute;
+  right: -1.1rem;
+  top: 50%;
+  color: rgba(78, 244, 255, 0.7);
+  transform: translateY(-50%);
+}
+
+.architecture-node:last-child::after {
+  display: none;
 }
 
 .status-dot {
@@ -88,5 +118,14 @@ body {
 @media (max-width: 768px) {
   .section-shell {
     padding-block: 3.5rem;
+  }
+
+  .architecture-node::after {
+    content: 'v';
+    left: 50%;
+    right: auto;
+    top: auto;
+    bottom: -1.55rem;
+    transform: translateX(-50%);
   }
 }
