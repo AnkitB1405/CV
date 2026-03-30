@@ -93,6 +93,104 @@ body {
   animation: text-dim 1.8s ease-in-out infinite;
 }
 
+.ctf-shell {
+  position: relative;
+  background:
+    linear-gradient(145deg, rgba(9, 17, 36, 0.95), rgba(3, 8, 20, 0.92)),
+    radial-gradient(circle at 15% 20%, rgba(78, 244, 255, 0.12), transparent 32%);
+}
+
+.ctf-shell__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(78, 244, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(78, 244, 255, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.38), transparent 78%);
+  pointer-events: none;
+}
+
+.ctf-shell__glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.ctf-shell__glow--one {
+  width: 12rem;
+  height: 12rem;
+  right: -2.5rem;
+  top: -2rem;
+  background: radial-gradient(circle, rgba(63, 140, 255, 0.22), transparent 70%);
+}
+
+.ctf-shell__glow--two {
+  width: 10rem;
+  height: 10rem;
+  left: -2rem;
+  bottom: -2.5rem;
+  background: radial-gradient(circle, rgba(125, 255, 200, 0.16), transparent 72%);
+}
+
+.ctf-chart-card {
+  background:
+    radial-gradient(circle at top, rgba(63, 140, 255, 0.16), transparent 35%),
+    linear-gradient(180deg, rgba(9, 17, 36, 0.96), rgba(2, 6, 18, 0.96));
+}
+
+.ctf-chart-card__orb {
+  position: absolute;
+  inset: auto auto 2.25rem 2rem;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, rgba(78, 244, 255, 0.5), rgba(63, 140, 255, 0.1) 55%, transparent 75%);
+  filter: blur(6px);
+  opacity: 0.65;
+  animation: float 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.ctf-chart-card__ring {
+  position: absolute;
+  border: 1px solid rgba(78, 244, 255, 0.12);
+  border-radius: 9999px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.ctf-chart-card__ring--one {
+  width: 20rem;
+  height: 20rem;
+  right: -3rem;
+  top: 1rem;
+  transform: rotateX(72deg) rotateZ(10deg);
+}
+
+.ctf-chart-card__ring--two {
+  width: 15rem;
+  height: 15rem;
+  right: 0.5rem;
+  top: 3rem;
+  border-color: rgba(125, 255, 200, 0.12);
+  transform: rotateX(72deg) rotateZ(-18deg);
+}
+
+.ctf-chart-zone {
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(123, 231, 255, 0.08), transparent 45%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
+  transform: perspective(1000px) rotateX(36deg);
+  transform-origin: center 42%;
+}
+
+.ctf-chart-canvas {
+  filter: drop-shadow(0 20px 30px rgba(8, 15, 35, 0.45));
+}
+
 @keyframes pulse-dim {
   0%,
   100% {
@@ -118,6 +216,10 @@ body {
 @media (max-width: 768px) {
   .section-shell {
     padding-block: 3.5rem;
+  }
+
+  .ctf-chart-zone {
+    transform: perspective(900px) rotateX(36deg);
   }
 
   .architecture-node::after {

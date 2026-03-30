@@ -6,6 +6,7 @@ const homeNavItems = [
   { id: 'education', label: 'Education' },
   { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
+  { id: 'ctf-activity', label: 'CTF' },
   { id: 'awards', label: 'Certificates' },
   { id: 'contact', label: 'Contact' }
 ];
