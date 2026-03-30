@@ -73,7 +73,7 @@ const Hero = () => {
 
         <Reveal delay={110} className="animate-float">
           <div className="relative flex justify-center lg:justify-center">
-            <div className="relative h-72 w-72 rounded-full border border-cyan/35 bg-gradient-to-br from-cyan/20 via-electric/15 to-transparent p-2 shadow-neon md:h-80 md:w-80 xl:h-[21.5rem] xl:w-[21.5rem]">
+            <div className="group relative h-60 w-60 overflow-hidden rounded-full border border-cyan/35 bg-gradient-to-br from-cyan/20 via-electric/15 to-transparent p-2 shadow-neon sm:h-72 sm:w-72 md:h-80 md:w-80 lg:h-[24rem] lg:w-[24rem] xl:h-[26rem] xl:w-[26rem]">
               <div
                 className="absolute -inset-5 -z-10 rounded-full bg-cyan/15 blur-3xl"
                 aria-hidden="true"
@@ -85,7 +85,7 @@ const Hero = () => {
               <img
                 src={profileImage}
                 alt={`${profile.name} portrait`}
-                className="h-full w-full rounded-full object-cover object-[center_22%] scale-110"
+                className="h-full w-full rounded-full object-cover object-[50%_25%] transition-transform duration-300 ease-out translate-x-[6%] group-hover:scale-[1.4] scale-[1.28]"
               />
             </div>
           </div>
