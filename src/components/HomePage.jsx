@@ -3,6 +3,7 @@ import About from './About';
 import Education from './Education';
 import Skills from './Skills';
 import Projects from './Projects';
+import CTFActivity from './CTFActivity';
 import Awards from './Awards';
 import Contact from './Contact';
 
@@ -14,6 +15,7 @@ const HomePage = () => {
       <Education />
       <Skills />
       <Projects />
+      <CTFActivity />
       <Awards />
       <Contact />
     </main>
