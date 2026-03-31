@@ -13,7 +13,6 @@ const homeNavItems = [
 
 const projectNavItems = [
   { href: '/#projects', label: 'Home Projects' },
-  { href: '#experiments', label: 'Experiments' },
   { href: '/', label: 'Back Home', route: '/' }
 ];
 

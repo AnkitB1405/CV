@@ -1,7 +1,7 @@
-import { FaArrowLeft, FaArrowUpRightFromSquare, FaGithub } from 'react-icons/fa6';
+import { FaArrowLeft, FaGithub } from 'react-icons/fa6';
 import SectionTitle from './SectionTitle';
 import Reveal from './Reveal';
-import { experiments, projects } from '../data/siteData';
+import { projects } from '../data/siteData';
 import { navigateTo } from '../utils/navigation';
 
 const githubButtonClassName =
@@ -160,34 +160,6 @@ const ProjectsPage = () => {
                 ) : null}
               </Reveal>
             </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="experiments" className="section-shell scroll-mt-32 pt-8">
-        <Reveal>
-          <SectionTitle
-            eyebrow="Proof of Work"
-            title="Experiments & Technical Exploration"
-            description="A space for writeups, lab notes, and technical observations that will grow alongside ongoing projects."
-          />
-        </Reveal>
-
-        <div className="grid gap-5 md:grid-cols-3">
-          {experiments.map((item, index) => (
-            <Reveal
-              key={item.title}
-              as="article"
-              delay={index * 90}
-              className="rounded-3xl border border-dashed border-white/20 bg-panel/70 p-6 transition duration-300 hover:-translate-y-1 hover:border-cyan/45 hover:shadow-neon"
-            >
-              <h3 className="font-display text-xl text-white">{item.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
-              <div className="mt-5 inline-flex items-center gap-2 text-sm text-slate-400">
-                <FaArrowUpRightFromSquare aria-hidden="true" />
-                Future links and writeups
-              </div>
-            </Reveal>
           ))}
         </div>
       </section>
