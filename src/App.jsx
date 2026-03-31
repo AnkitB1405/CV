@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
 import { seo } from './data/siteData';
+import { scrollToHashTarget } from './utils/navigation';
 
 const resolveRoute = () => {
   const params = new URLSearchParams(window.location.search);
@@ -26,14 +27,15 @@ const App = () => {
     const handleLocationChange = () => {
       setRoute(resolveRoute());
       window.requestAnimationFrame(() => {
-        const hash = window.location.hash.replace('#', '');
+        window.requestAnimationFrame(() => {
+          const hash = window.location.hash;
 
-        if (hash) {
-          document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          return;
-        }
+          if (hash && scrollToHashTarget(hash)) {
+            return;
+          }
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       });
     };
 

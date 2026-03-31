@@ -4,7 +4,8 @@ import Reveal from './Reveal';
 import { experiments, projects } from '../data/siteData';
 import { navigateTo } from '../utils/navigation';
 
-const architectureFlow = ['User', 'Router', 'Proxmox Host', 'Containers', 'Services'];
+const githubButtonClassName =
+  'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition';
 
 const ProjectsPage = () => {
   return (
@@ -30,118 +31,140 @@ const ProjectsPage = () => {
           <SectionTitle
             eyebrow="Projects"
             title="Detailed Builds, Experiments, and Lab Notes"
-            description="A closer look at the systems, security projects, and experiments that shape how I learn by building."
+            description="A closer look at the systems, security projects, and infrastructure work that shape how I learn by building."
           />
         </Reveal>
 
         <div className="space-y-8">
           {projects.map((project, index) => (
-            <Reveal
+            <article
               key={project.slug}
-              as="article"
               id={project.slug}
-              delay={index * 80}
-              className="rounded-3xl border border-white/10 bg-gradient-to-b from-panel/95 to-slate-900 p-6 shadow-card"
+              className="scroll-mt-32 rounded-3xl border border-white/10 bg-gradient-to-b from-panel/95 to-slate-900 p-6 shadow-card"
             >
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="font-display text-2xl text-white">{project.detailTitle ?? project.title}</h2>
-                {project.status === 'in-progress' ? (
-                  <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-emerald-300">
-                    <span className="status-dot" aria-hidden="true" />
-                    <span className="status-glow-text">{project.statusLabel ?? 'In Progress'}</span>
-                  </span>
-                ) : null}
-              </div>
+              <Reveal delay={index * 80}>
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <h2 className="font-display text-2xl text-white">{project.detailTitle ?? project.title}</h2>
+                      {project.status === 'in-progress' ? (
+                        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-emerald-300">
+                          <span className="status-dot" aria-hidden="true" />
+                          <span className="status-glow-text">{project.statusLabel ?? 'In Progress'}</span>
+                        </span>
+                      ) : null}
+                    </div>
 
-              <div className="mt-6 grid gap-6 md:grid-cols-2">
-                <div className="space-y-5 text-sm leading-7 text-slate-300">
-                  <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">Description</h3>
-                    <p className="mt-2">{project.description}</p>
+                    <p className="max-w-3xl text-sm leading-7 text-slate-300">{project.description}</p>
                   </div>
-                  <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">Problem Statement</h3>
-                    <p className="mt-2">{project.problem}</p>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">Technologies Used</h3>
-                    <ul className="mt-3 flex flex-wrap gap-2">
-                      {project.technologies.map((tech) => (
-                        <li
-                          key={tech}
-                          className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-slate-200"
+
+                  {project.github ? (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`${githubButtonClassName} border-cyan/30 bg-cyan/10 text-cyan hover:-translate-y-0.5 hover:border-cyan/60 hover:shadow-neon`}
+                    >
+                      <FaGithub aria-hidden="true" />
+                      GitHub
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      className={`${githubButtonClassName} cursor-not-allowed border-white/10 bg-white/5 text-slate-400`}
+                    >
+                      <FaGithub aria-hidden="true" />
+                      GitHub
+                    </button>
+                  )}
+                </div>
+
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <li
+                      key={tech}
+                      className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-slate-200"
+                    >
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-8 space-y-5">
+                  {project.detailSections.map((section) => (
+                    <section
+                      key={section.heading}
+                      className="rounded-2xl border border-white/10 bg-white/5 px-5 py-5 text-sm leading-7 text-slate-300"
+                    >
+                      <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">
+                        {section.heading}
+                      </h3>
+
+                      {section.paragraphs?.map((paragraph) => (
+                        <p key={paragraph} className="mt-3">
+                          {paragraph}
+                        </p>
+                      ))}
+
+                      {section.bullets?.length ? (
+                        <ul className="mt-3 space-y-2">
+                          {section.bullets.map((item) => (
+                            <li
+                              key={item}
+                              className="rounded-2xl border border-white/10 bg-slate-950/35 px-4 py-3 leading-6"
+                            >
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </section>
+                  ))}
+                </div>
+
+                {project.media ? (
+                  <section className="mt-8 rounded-2xl border border-white/10 bg-white/5 px-5 py-5 text-sm text-slate-300">
+                    <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">
+                      Architecture & Visual References
+                    </h3>
+
+                    <figure className="mt-4 overflow-hidden rounded-2xl border border-cyan/20 bg-slate-950/50">
+                      <img
+                        src={project.media.architecture.src}
+                        alt={project.media.architecture.alt}
+                        className="h-auto w-full object-cover"
+                      />
+                      <figcaption className="border-t border-white/10 px-4 py-3 text-sm leading-6 text-slate-400">
+                        {project.media.architecture.caption}
+                      </figcaption>
+                    </figure>
+
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      {project.media.placeholders.map((item) => (
+                        <div
+                          key={item.title}
+                          className="flex min-h-[220px] flex-col justify-between rounded-2xl border border-dashed border-white/20 bg-slate-950/35 p-5"
                         >
-                          {tech}
-                        </li>
+                          <div>
+                            <h4 className="font-display text-lg text-white">{item.title}</h4>
+                            <p className="mt-3 leading-6 text-slate-400">{item.description}</p>
+                          </div>
+                          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                            Screenshot placeholder
+                          </span>
+                        </div>
                       ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="space-y-5 text-sm leading-7 text-slate-300">
-                  <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">Key Features</h3>
-                    <ul className="mt-2 space-y-2">
-                      {project.keyFeatures.map((feature) => (
-                        <li key={feature} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">What I Learned</h3>
-                    <ul className="mt-2 space-y-2">
-                      {project.learned.map((item) => (
-                        <li key={item} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {project.slug === 'homelab-infrastructure' ? (
-                <div className="mt-8">
-                  <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">Homelab Architecture</h3>
-                  <div className="mt-4 flex flex-col gap-8 md:flex-row md:gap-6">
-                    {architectureFlow.map((item) => (
-                      <div
-                        key={item}
-                        className="architecture-node flex-1 rounded-2xl border border-cyan/25 bg-cyan/5 px-4 py-4 text-center text-sm font-medium text-slate-100 shadow-[0_0_18px_rgba(78,244,255,0.08)]"
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-
-              <div className="mt-6 flex flex-wrap gap-4 text-sm">
-                {project.github ? (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 text-cyan transition hover:text-mint"
-                  >
-                    <FaGithub aria-hidden="true" />
-                    GitHub
-                  </a>
-                ) : (
-                  <span className="inline-flex items-center gap-2 text-slate-500">
-                    <FaGithub aria-hidden="true" />
-                    GitHub link coming soon
-                  </span>
-                )}
-              </div>
-            </Reveal>
+                    </div>
+                  </section>
+                ) : null}
+              </Reveal>
+            </article>
           ))}
         </div>
       </section>
 
-      <section id="experiments" className="section-shell pt-8">
+      <section id="experiments" className="section-shell scroll-mt-32 pt-8">
         <Reveal>
           <SectionTitle
             eyebrow="Proof of Work"

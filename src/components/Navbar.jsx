@@ -44,6 +44,12 @@ const Navbar = ({ route }) => {
                     if (item.route) {
                       event.preventDefault();
                       navigateTo(item.route);
+                      return;
+                    }
+
+                    if (item.href.startsWith('#')) {
+                      event.preventDefault();
+                      navigateTo(`/projects${item.href}`);
                     }
                   }}
                   className="transition hover:text-cyan focus-visible:text-cyan focus-visible:outline-none"
