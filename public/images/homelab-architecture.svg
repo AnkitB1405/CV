@@ -1,0 +1,145 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="220" y1="80" x2="1380" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1226" />
+      <stop offset="1" stop-color="#04070F" />
+    </linearGradient>
+    <linearGradient id="panel" x1="310" y1="160" x2="1270" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101B35" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#091224" stop-opacity="0.95" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#4EF4FF" />
+      <stop offset="1" stop-color="#68FFB4" />
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" rx="36" fill="url(#bg)" />
+  <circle cx="250" cy="160" r="180" fill="#1B5BFF" fill-opacity="0.16" />
+  <circle cx="1320" cy="170" r="170" fill="#3AE7C0" fill-opacity="0.13" />
+  <circle cx="1320" cy="760" r="220" fill="#4EF4FF" fill-opacity="0.08" />
+
+  <rect x="220" y="92" width="1160" height="716" rx="36" fill="url(#panel)" stroke="#FFFFFF" stroke-opacity="0.10" />
+  <text x="280" y="162" fill="#FFFFFF" font-family="Manrope, Arial, sans-serif" font-size="34" font-weight="700">
+    Homelab Infrastructure &amp; Self-Hosted Services
+  </text>
+  <text x="280" y="200" fill="#96A8C9" font-family="Manrope, Arial, sans-serif" font-size="18">
+    Secure remote access, Docker Compose services, centralized storage, and an isolated cybersecurity practice environment
+  </text>
+
+  <rect x="278" y="258" width="256" height="122" rx="24" fill="#0B1427" stroke="#4EF4FF" stroke-opacity="0.45" />
+  <text x="310" y="305" fill="#4EF4FF" font-family="Space Grotesk, Arial, sans-serif" font-size="20" font-weight="700">
+    Trusted Devices
+  </text>
+  <text x="310" y="338" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="18">
+    SSH, browser access,
+  </text>
+  <text x="310" y="364" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="18">
+    and service administration
+  </text>
+
+  <rect x="658" y="248" width="284" height="142" rx="28" fill="#0D1A2E" stroke="url(#accent)" stroke-opacity="0.9" />
+  <rect x="684" y="276" width="232" height="20" rx="10" fill="#4EF4FF" fill-opacity="0.12" />
+  <text x="703" y="291" fill="#4EF4FF" font-family="Space Grotesk, Arial, sans-serif" font-size="17" font-weight="700">
+    Secure Access Layer
+  </text>
+  <text x="704" y="335" fill="#FFFFFF" font-family="Manrope, Arial, sans-serif" font-size="28" font-weight="700">
+    Tailscale Mesh VPN
+  </text>
+  <text x="704" y="367" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="18">
+    Private remote entry point to the lab
+  </text>
+
+  <rect x="1068" y="258" width="258" height="122" rx="24" fill="#0B1427" stroke="#68FFB4" stroke-opacity="0.45" />
+  <text x="1100" y="305" fill="#68FFB4" font-family="Space Grotesk, Arial, sans-serif" font-size="20" font-weight="700">
+    Linux / Proxmox Host
+  </text>
+  <text x="1100" y="338" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="18">
+    Virtualized and containerized
+  </text>
+  <text x="1100" y="364" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="18">
+    workloads on modest hardware
+  </text>
+
+  <path d="M534 320H658" stroke="#4EF4FF" stroke-width="4" stroke-linecap="round" filter="url(#glow)" />
+  <path d="M942 320H1068" stroke="#68FFB4" stroke-width="4" stroke-linecap="round" filter="url(#glow)" />
+  <path d="M650 320L634 309V331L650 320Z" fill="#4EF4FF" />
+  <path d="M1060 320L1044 309V331L1060 320Z" fill="#68FFB4" />
+
+  <rect x="312" y="476" width="976" height="262" rx="30" fill="#07101F" stroke="#FFFFFF" stroke-opacity="0.10" />
+  <text x="352" y="525" fill="#FFFFFF" font-family="Space Grotesk, Arial, sans-serif" font-size="24" font-weight="700">
+    Service Layer
+  </text>
+  <text x="352" y="557" fill="#96A8C9" font-family="Manrope, Arial, sans-serif" font-size="17">
+    Docker Compose deployment, persistent volumes, data management, and isolated lab services
+  </text>
+
+  <rect x="352" y="590" width="198" height="106" rx="22" fill="#0C1730" stroke="#4EF4FF" stroke-opacity="0.32" />
+  <text x="380" y="629" fill="#4EF4FF" font-family="Space Grotesk, Arial, sans-serif" font-size="19" font-weight="700">
+    Portainer
+  </text>
+  <text x="380" y="661" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="17">
+    Stack control, logs,
+  </text>
+  <text x="380" y="686" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="17">
+    and container lifecycle
+  </text>
+
+  <rect x="580" y="590" width="226" height="106" rx="22" fill="#0C1730" stroke="#68FFB4" stroke-opacity="0.32" />
+  <text x="608" y="629" fill="#68FFB4" font-family="Space Grotesk, Arial, sans-serif" font-size="19" font-weight="700">
+    Immich + PostgreSQL + Redis
+  </text>
+  <text x="608" y="661" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="17">
+    Self-hosted photo management
+  </text>
+  <text x="608" y="686" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="17">
+    with persistent application data
+  </text>
+
+  <rect x="836" y="590" width="180" height="106" rx="22" fill="#0C1730" stroke="#4EF4FF" stroke-opacity="0.32" />
+  <text x="864" y="629" fill="#4EF4FF" font-family="Space Grotesk, Arial, sans-serif" font-size="19" font-weight="700">
+    Heimdall
+  </text>
+  <text x="864" y="661" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="17">
+    Service dashboard
+  </text>
+  <text x="864" y="686" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="17">
+    and navigation layer
+  </text>
+
+  <rect x="1046" y="590" width="202" height="106" rx="22" fill="#0C1730" stroke="#68FFB4" stroke-opacity="0.32" />
+  <text x="1074" y="629" fill="#68FFB4" font-family="Space Grotesk, Arial, sans-serif" font-size="19" font-weight="700">
+    Samba NAS
+  </text>
+  <text x="1074" y="661" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="17">
+    Centralized storage
+  </text>
+  <text x="1074" y="686" fill="#D7E8FF" font-family="Manrope, Arial, sans-serif" font-size="17">
+    and local file sharing
+  </text>
+
+  <path d="M1198 390V474H786" stroke="url(#accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M786 474L800 459V489L786 474Z" fill="#4EF4FF" />
+
+  <rect x="1162" y="430" width="192" height="122" rx="24" fill="#151322" stroke="#FF7AA2" stroke-opacity="0.42" />
+  <text x="1190" y="475" fill="#FF93B4" font-family="Space Grotesk, Arial, sans-serif" font-size="19" font-weight="700">
+    Security Lab
+  </text>
+  <text x="1190" y="507" fill="#FFE1EA" font-family="Manrope, Arial, sans-serif" font-size="17">
+    Metasploitable VM for
+  </text>
+  <text x="1190" y="532" fill="#FFE1EA" font-family="Manrope, Arial, sans-serif" font-size="17">
+    vulnerability testing
+  </text>
+
+  <text x="280" y="790" fill="#7F92B8" font-family="Manrope, Arial, sans-serif" font-size="16">
+    Key focus: secure administration, stateful container services, storage utility, and realistic lab practice under hardware constraints
+  </text>
+</svg>
