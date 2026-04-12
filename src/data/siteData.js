@@ -20,7 +20,7 @@ export const profile = {
   email: 'ankitbembalgi@gmail.com',
   github: 'https://github.com/AnkitB1405',
   linkedin: 'https://www.linkedin.com/in/ankit-bembalgi-b65b55297/',
-  resumeUrl: '/resume.pdf'
+  resumeUrl: '/Ankit_Bembalgi.pdf'
 };
 
 export const education = {
