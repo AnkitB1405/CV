@@ -114,18 +114,20 @@ export const projects = [
     ],
     media: {
       architecture: {
-        src: '/images/homelab-architecture.svg',
+        src: '/images/Homelab_Achitecture.png',
         alt: 'Architecture diagram showing Tailscale-secured remote access to a Linux homelab with Docker services, NAS storage, and an isolated cybersecurity lab.',
         caption: 'High-level architecture of the homelab, showing the remote access path, service layer, storage layer, and isolated security lab components.'
       },
       placeholders: [
         {
           title: 'Portainer Dashboard Screenshot',
-          description: 'Reserved space for a future screenshot of Portainer stack and container management.'
+          description: 'Reserved space for a future screenshot of Portainer stack and container management.',
+          imageUrl: '/images/portainer_dashboard.png'
         },
         {
           title: 'Tailscale Access Screenshot',
-          description: 'Reserved space for a future screenshot showing secure remote connectivity into the homelab.'
+          description: 'Reserved space for a future screenshot showing secure remote connectivity into the homelab.',
+          imageUrl: '/images/tailscale.png'
         }
       ]
     },

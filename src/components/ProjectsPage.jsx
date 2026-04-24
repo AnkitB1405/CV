@@ -142,18 +142,30 @@ const ProjectsPage = () => {
 
                     <div className="mt-4 grid gap-4 md:grid-cols-2">
                       {project.media.placeholders.map((item) => (
-                        <div
+                        <figure
                           key={item.title}
-                          className="flex min-h-[220px] flex-col justify-between rounded-2xl border border-dashed border-white/20 bg-slate-950/35 p-5"
+                          className={`overflow-hidden rounded-2xl border bg-slate-950/35 ${
+                            item.imageUrl ? 'border-white/10' : 'border-dashed border-white/20 p-5'
+                          }`}
                         >
-                          <div>
+                          {item.imageUrl ? (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.title}
+                              className="h-auto w-full object-contain"
+                            />
+                          ) : null}
+
+                          <figcaption className={item.imageUrl ? 'border-t border-white/10 p-4' : ''}>
                             <h4 className="font-display text-lg text-white">{item.title}</h4>
                             <p className="mt-3 leading-6 text-slate-400">{item.description}</p>
-                          </div>
-                          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                            Screenshot placeholder
-                          </span>
-                        </div>
+                            {!item.imageUrl ? (
+                              <span className="mt-8 block text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                                Screenshot placeholder
+                              </span>
+                            ) : null}
+                          </figcaption>
+                        </figure>
                       ))}
                     </div>
                   </section>
