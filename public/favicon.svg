@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">AB monogram favicon</title>
+  <desc id="desc">A dark AB monogram with a cyan accent dot for Ankit Bembalgi's portfolio.</desc>
+  <defs>
+    <linearGradient id="tile" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#101b34" />
+      <stop offset="1" stop-color="#04070f" />
+    </linearGradient>
+    <filter id="soft-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="url(#tile)" />
+  <rect
+    x="5"
+    y="5"
+    width="54"
+    height="54"
+    rx="12"
+    fill="none"
+    stroke="#4ef4ff"
+    stroke-opacity="0.25"
+    stroke-width="2"
+  />
+  <text
+    x="8.5"
+    y="41"
+    fill="#f8fafc"
+    font-family="Space Grotesk, Manrope, Arial, sans-serif"
+    font-size="25"
+    font-weight="700"
+    letter-spacing="-1"
+  >AB</text>
+  <circle cx="50" cy="42" r="4.5" fill="#4ef4ff" filter="url(#soft-glow)" />
+</svg>
