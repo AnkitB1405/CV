@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const Reveal = ({ as: Tag = 'div', className = '', children, delay = 0, ...props }) => {
+const Reveal = ({ as: Tag = 'div', className = '', children, delay = 0, threshold = 0.16, ...props }) => {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -18,13 +18,13 @@ const Reveal = ({ as: Tag = 'div', className = '', children, delay = 0, ...props
           observer.disconnect();
         }
       },
-      { threshold: 0.16 }
+      { threshold }
     );
 
     observer.observe(node);
 
     return () => observer.disconnect();
-  }, []);
+  }, [threshold]);
 
   return (
     <Tag
