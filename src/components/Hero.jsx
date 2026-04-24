@@ -14,8 +14,8 @@ const Hero = () => {
     <section id="home" className="relative overflow-hidden pt-20 md:pt-24">
       <div className="absolute left-1/2 top-0 -z-10 h-[460px] w-[460px] -translate-x-1/2 rounded-full bg-cyan/20 blur-[120px]" />
       <div className="mx-auto grid w-[min(1120px,92%)] gap-12 pb-24 lg:grid-cols-[minmax(0,1.08fr)_minmax(340px,0.72fr)] lg:items-center md:pb-28">
-        <Reveal>
-          <div className="mx-auto w-full max-w-[42rem] lg:mx-0">
+        <Reveal className="order-2 lg:order-1">
+          <div className="mx-auto w-full max-w-[42rem] text-center lg:mx-0 lg:text-left">
             <p className="mb-4 inline-flex rounded-full border border-electric/50 bg-electric/10 px-4 py-1 text-xs uppercase tracking-[0.22em] text-electric">
               {profile.location}
             </p>
@@ -23,8 +23,8 @@ const Hero = () => {
               {profile.name}
             </h1>
             <h2 className="mt-4 text-xl font-semibold text-cyan md:text-2xl">{profile.role}</h2>
-            <p className="mt-6 max-w-2xl text-base text-slate-300 md:text-lg">{profile.tagline}</p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <p className="mx-auto mt-6 max-w-2xl text-base text-slate-300 md:text-lg lg:mx-0">{profile.tagline}</p>
+            <div className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
               <a
                 href="#projects"
                 className="rounded-full bg-cyan px-6 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:shadow-neon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
@@ -40,7 +40,7 @@ const Hero = () => {
               </a>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
               {socialLinks.map(({ label, href, icon: Icon }) => (
                 <a
                   key={label}
@@ -71,7 +71,7 @@ const Hero = () => {
           </div>
         </Reveal>
 
-        <Reveal delay={110} className="animate-float">
+        <Reveal delay={110} className="order-1 animate-float lg:order-2">
           <div className="relative flex justify-center lg:justify-center">
             <div className="group relative h-60 w-60 overflow-hidden rounded-full border border-cyan/35 bg-gradient-to-br from-cyan/20 via-electric/15 to-transparent p-2 shadow-neon sm:h-72 sm:w-72 md:h-80 md:w-80 lg:h-[24rem] lg:w-[24rem] xl:h-[26rem] xl:w-[26rem]">
               <div

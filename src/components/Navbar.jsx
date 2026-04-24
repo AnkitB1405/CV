@@ -16,25 +16,28 @@ const projectNavItems = [
   { href: '/', label: 'Back Home', route: '/' }
 ];
 
+const navListClassName =
+  'flex min-w-0 flex-1 gap-4 overflow-x-auto whitespace-nowrap pr-1 text-sm text-slate-200 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:flex-none md:gap-6 md:overflow-visible md:pr-0';
+
 const Navbar = ({ route }) => {
   const isProjectsPage = route === 'projects';
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-bg/80 backdrop-blur-xl">
-      <nav className="mx-auto flex w-[min(1100px,92%)] items-center justify-between py-4">
+      <nav className="mx-auto flex w-[min(1100px,92%)] items-center justify-between gap-4 overflow-hidden py-4">
         <a
           href="/"
           onClick={(event) => {
             event.preventDefault();
             navigateTo('/');
           }}
-          className="font-display text-lg font-bold text-white"
+          className="shrink-0 font-display text-lg font-bold text-white"
         >
           AB<span className="text-cyan">.</span>
         </a>
 
         {isProjectsPage ? (
-          <ul className="hidden gap-6 text-sm text-slate-200 md:flex">
+          <ul className={navListClassName}>
             {projectNavItems.map((item) => (
               <li key={item.label}>
                 <a
@@ -59,7 +62,7 @@ const Navbar = ({ route }) => {
             ))}
           </ul>
         ) : (
-          <ul className="hidden gap-6 text-sm text-slate-200 md:flex">
+          <ul className={navListClassName}>
             {homeNavItems.map((item) => (
               <li key={item.id}>
                 <a
