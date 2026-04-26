@@ -22,6 +22,80 @@ body {
     #04070f;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .custom-cursor-enabled,
+  .custom-cursor-enabled * {
+    cursor: none !important;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    width: 1.45rem;
+    height: 1.48rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(-100px, -100px, 0);
+    transition:
+      opacity 180ms ease,
+      filter 180ms ease,
+      scale 160ms ease;
+    will-change: transform;
+  }
+
+  .custom-cursor--ready {
+    opacity: 1;
+  }
+
+  .custom-cursor--hidden {
+    opacity: 0;
+  }
+
+  .custom-cursor__pointer {
+    position: absolute;
+    left: -0.2rem;
+    top: -0.12rem;
+    width: 1.45rem;
+    height: 1.48rem;
+    overflow: visible;
+    filter: drop-shadow(0 0 7px rgba(78, 244, 255, 0.28));
+  }
+
+  .custom-cursor__glow {
+    fill: none;
+    stroke: rgba(78, 244, 255, 0.35);
+    stroke-width: 5.2;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 8px rgba(78, 244, 255, 0.58));
+  }
+
+  .custom-cursor__edge {
+    fill: #07132c;
+    stroke: #4ef4ff;
+    stroke-width: 3.2;
+    stroke-linejoin: round;
+  }
+
+  .custom-cursor__face {
+    fill: #020817;
+    stroke: rgba(125, 255, 200, 0.18);
+    stroke-width: 0.9;
+    stroke-linejoin: round;
+  }
+
+  .custom-cursor--interactive {
+    scale: 1.08;
+    filter: brightness(1.08);
+  }
+
+  .custom-cursor--active {
+    scale: 0.94;
+    filter: brightness(1.28);
+  }
+}
+
 .section-shell {
   width: min(1100px, 92%);
   margin-inline: auto;

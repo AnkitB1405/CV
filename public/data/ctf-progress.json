@@ -1,7 +1,7 @@
 {
-  "Cryptography": 5,
-  "Web Exploitation": 8,
-  "Forensics": 12,
-  "Reverse Engineering": 4,
+  "Cryptography": 6,
+  "Web Exploitation": 11,
+  "Forensics": 17,
+  "Reverse Engineering": 7,
   "Binary Exploitation": 3
 }
