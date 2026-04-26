@@ -33,7 +33,7 @@ export const education = {
 export const skills = {
   programmingLanguages: ['Python', 'C', 'JavaScript', 'Bash / Shell'],
   webTechnologies: ['HTML5', 'JavaScript'],
-  systemsAndInfrastructure: ['Linux', 'Docker', 'Networking', 'Self-hosted services', 'Containerization'],
+  systemsAndInfrastructure: ['Linux', 'Networking', 'Self-hosted services', 'Containerization'],
   developerTools: ['Git', 'VS Code', 'Docker']
 };
 
