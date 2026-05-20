@@ -5,7 +5,6 @@ import ProjectsPage from './components/ProjectsPage';
 import Footer from './components/Footer';
 import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
-import CustomCursor from './components/CustomCursor';
 import { seo } from './data/siteData';
 import { scrollToHashTarget } from './utils/navigation';
 
@@ -68,7 +67,6 @@ const App = () => {
       {route === 'projects' ? <ProjectsPage /> : <HomePage />}
       <Footer />
       <BackToTop />
-      <CustomCursor />
     </div>
   );
 };
