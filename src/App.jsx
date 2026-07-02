@@ -87,7 +87,7 @@ const App = () => {
   }, [metadata]);
 
   return (
-    <div className="min-h-screen bg-bg font-body text-ink">
+    <div className="min-h-screen font-body text-ink">
       <div className="grain" aria-hidden="true" />
       <ScrollProgress />
       <Navbar route={route} />
