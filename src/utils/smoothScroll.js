@@ -7,6 +7,11 @@ export const setLenis = (instance) => {
   lenis = instance;
 };
 
+// Lenis intercepts the wheel globally, so an open modal needs it paused — otherwise
+// scrolling over the dialog drives the page behind it instead of the dialog's content.
+export const pauseLenis = () => lenis?.stop();
+export const resumeLenis = () => lenis?.start();
+
 export const smoothScrollTo = (target) => {
   const el = typeof target === 'string' ? document.querySelector(target) : target;
 

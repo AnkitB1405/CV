@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FaArrowRight, FaGithub, FaXmark } from 'react-icons/fa6';
 import { projects } from '../data/siteData';
 import { navigateTo } from '../utils/navigation';
+import { pauseLenis, resumeLenis } from '../utils/smoothScroll';
 import { OPEN_PROJECT } from '../utils/ui';
 
 const findProject = (slug) => projects.find((project) => project.slug === slug) ?? null;
@@ -17,6 +18,7 @@ const ProjectModal = () => {
     if (!match) return;
     setProject(match);
     document.documentElement.classList.add('scroll-locked');
+    pauseLenis();
     window.history.replaceState(null, '', `${window.location.pathname}#${slug}`);
     // showModal after the element renders with content
     requestAnimationFrame(() => dialogRef.current?.showModal());
@@ -24,6 +26,7 @@ const ProjectModal = () => {
 
   const handleClose = () => {
     document.documentElement.classList.remove('scroll-locked');
+    resumeLenis();
     setProject(null);
     if (window.location.hash) {
       window.history.replaceState(null, '', window.location.pathname);
@@ -82,7 +85,7 @@ const ProjectModal = () => {
             </button>
           </div>
 
-          <div className="overflow-y-auto px-5 py-6 md:px-7">
+          <div data-lenis-prevent className="overflow-y-auto px-5 py-6 md:px-7">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
