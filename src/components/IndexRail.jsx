@@ -108,7 +108,7 @@ const IndexRail = () => {
           onClick={() => setSheetOpen((open) => !open)}
           aria-expanded={sheetOpen}
           aria-label="Jump to section"
-          className="fixed bottom-5 left-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-pill border border-ember/50 bg-gradient-to-b from-emberBright to-ember text-[#1a0f0c] shadow-gloss transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember"
+          className="fixed bottom-5 left-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-pill border border-ember/50 bg-gradient-to-b from-emberBright to-ember text-[#111A2B] shadow-gloss transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember"
         >
           {sheetOpen ? <FaXmark aria-hidden="true" /> : <FaBars aria-hidden="true" />}
         </button>

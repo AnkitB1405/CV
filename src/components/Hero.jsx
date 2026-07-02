@@ -67,7 +67,7 @@ const Hero = () => {
         ref={lightRef}
         aria-hidden="true"
         className="pointer-events-none absolute h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500"
-        style={{ background: 'radial-gradient(circle, rgba(212,106,79,0.22), transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.22), transparent 70%)' }}
       />
 
       <div className="mx-auto grid w-[min(1180px,92%)] items-center gap-12 pb-[clamp(4rem,10vw,7rem)] pt-24 lg:grid-cols-[1.15fr_0.85fr] lg:pt-28">
@@ -88,8 +88,8 @@ const Hero = () => {
               <button
                 type="button"
                 onClick={() => smoothScrollTo('#projects')}
-                className="rounded-pill px-6 py-3 text-sm font-semibold text-[#1a0f0c] shadow-gloss transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember"
-                style={{ background: 'linear-gradient(180deg, #D46A4F 0%, #B4503A 48%, #93402d 100%)' }}
+                className="rounded-pill px-6 py-3 text-sm font-semibold text-[#111A2B] shadow-gloss transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember"
+                style={{ background: 'linear-gradient(180deg, #60A5FA 0%, #3B82F6 48%, #2563EB 100%)' }}
               >
                 View Projects
               </button>
@@ -124,7 +124,7 @@ const Hero = () => {
             <div
               aria-hidden="true"
               className="absolute -inset-6 -z-10 rounded-[2rem] opacity-70 blur-3xl transition-all duration-500 group-hover:-inset-8 group-hover:opacity-100"
-              style={{ background: 'radial-gradient(circle at 50% 40%, rgba(180,80,58,0.42), transparent 70%)' }}
+              style={{ background: 'radial-gradient(circle at 50% 40%, rgba(59,130,246,0.42), transparent 70%)' }}
             />
             <div
               ref={imageRef}
