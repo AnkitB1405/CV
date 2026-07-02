@@ -120,15 +120,15 @@ const Hero = () => {
         </Reveal>
 
         <Reveal delay={120} className="order-1 lg:order-2">
-          <div className="relative mx-auto w-full max-w-[24rem]">
+          <div className="group relative mx-auto w-full max-w-[24rem]">
             <div
               aria-hidden="true"
-              className="absolute -inset-6 -z-10 rounded-[2rem] blur-3xl"
-              style={{ background: 'radial-gradient(circle at 50% 40%, rgba(180,80,58,0.32), transparent 70%)' }}
+              className="absolute -inset-6 -z-10 rounded-[2rem] opacity-70 blur-3xl transition-all duration-500 group-hover:-inset-8 group-hover:opacity-100"
+              style={{ background: 'radial-gradient(circle at 50% 40%, rgba(180,80,58,0.42), transparent 70%)' }}
             />
             <div
               ref={imageRef}
-              className="overflow-hidden rounded-[1.75rem] border border-ember/25 bg-surface shadow-card"
+              className="overflow-hidden rounded-[1.75rem] border border-ember/25 bg-surface shadow-card transition-[border-color,box-shadow] duration-500 group-hover:border-ember/60 group-hover:shadow-ember"
             >
               <img
                 src={profileImage}

@@ -81,9 +81,12 @@ html.lenis body {
   }
 }
 
+/* Starts at a thin sliver, not 0 — a clip-to-zero would make the observed element
+   report ratio 0 to the (now persistent, bidirectional) IntersectionObserver and
+   deadlock the reveal. Paired with threshold:0 in Reveal.jsx. */
 @keyframes ember-wipe {
   from {
-    clip-path: inset(0 100% 0 0);
+    clip-path: inset(0 90% 0 0);
   }
   to {
     clip-path: inset(0 0 0 0);

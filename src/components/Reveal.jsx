@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const Reveal = ({ as: Tag = 'div', className = '', children, delay = 0, threshold = 0.16, ...props }) => {
+const Reveal = ({ as: Tag = 'div', className = '', children, delay = 0, threshold = 0, ...props }) => {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -11,14 +11,12 @@ const Reveal = ({ as: Tag = 'div', className = '', children, delay = 0, threshol
       return undefined;
     }
 
+    // Bidirectional: reveal on scroll into view, hide again on scroll out (both directions).
+    // threshold 0 (+ rootMargin) so any sliver counts as visible — the ember-wipe animation
+    // clips the element down to ~10%, which must NOT read as "out of view" and untoggle us.
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold }
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold, rootMargin: '0px 0px -8% 0px' }
     );
 
     observer.observe(node);
@@ -30,7 +28,7 @@ const Reveal = ({ as: Tag = 'div', className = '', children, delay = 0, threshol
     <Tag
       ref={ref}
       className={`reveal ${isVisible ? 'reveal-visible' : ''} ${className}`.trim()}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={{ transitionDelay: `${delay}ms`, animationDelay: `${delay}ms` }}
       {...props}
     >
       {children}
