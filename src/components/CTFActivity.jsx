@@ -3,7 +3,7 @@ import { ArcElement, Chart, Legend, PieController, Title, Tooltip } from 'chart.
 import SectionTitle from './SectionTitle';
 import Reveal from './Reveal';
 
-const chartColors = ['#7be7ff', '#4ecbff', '#3f8cff', '#2f6dff', '#2ea8d7', '#6fd4ff'];
+const chartColors = ['#D46A4F', '#B4503A', '#E08A5B', '#93402d', '#C2543A', '#7A2E22'];
 const FULL_ROTATION = Math.PI * 2;
 const FRONT_ANGLE = Math.PI / 2;
 const SLICE_OFFSET = 28;
@@ -108,7 +108,7 @@ const pieDepthPlugin = {
         properties.endAngle
       );
       ctx.closePath();
-      ctx.fillStyle = 'rgba(3, 8, 20, 0.24)';
+      ctx.fillStyle = 'rgba(11, 9, 8, 0.3)';
       ctx.filter = 'blur(10px)';
       ctx.fill();
       ctx.restore();
@@ -263,10 +263,10 @@ const CTFActivity = () => {
             display: false
           },
           tooltip: {
-            backgroundColor: 'rgba(9, 17, 36, 0.95)',
-            titleColor: '#f8fafc',
-            bodyColor: '#d9ebff',
-            borderColor: 'rgba(78, 244, 255, 0.25)',
+            backgroundColor: 'rgba(23, 17, 14, 0.95)',
+            titleColor: '#f2ece8',
+            bodyColor: '#f2ece8',
+            borderColor: 'rgba(212, 106, 79, 0.3)',
             borderWidth: 1,
             padding: 12
           }
@@ -346,7 +346,6 @@ const CTFActivity = () => {
     <section id="ctf-activity" ref={sectionRef} className="section-shell">
       <Reveal>
         <SectionTitle
-          eyebrow="CTF Activity"
           title="Hands-on progress across CTF challenge categories"
           description="I regularly solve Capture The Flag challenges to practice cybersecurity concepts such as cryptography, web security, and reverse engineering."
         />
@@ -354,22 +353,19 @@ const CTFActivity = () => {
 
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <Reveal delay={80}>
-          <div className="ctf-shell flex h-full flex-col justify-between overflow-hidden rounded-[2rem] border border-cyan/10 p-6 shadow-card">
+          <div className="ctf-shell flex h-full flex-col justify-between overflow-hidden rounded-[2rem] border border-line p-6 shadow-card">
             <div className="ctf-shell__grid" aria-hidden="true" />
             <div className="ctf-shell__glow ctf-shell__glow--one" aria-hidden="true" />
             <div className="ctf-shell__glow ctf-shell__glow--two" aria-hidden="true" />
 
             <div className="relative z-10">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan">
-                Continuous practice
-              </p>
-              <h3 className="mt-3 font-display text-2xl text-white">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-emberBright">Continuous practice</p>
+              <h3 className="mt-3 font-display text-2xl font-bold text-ink">
                 CTFs are where I sharpen problem-solving under real technical constraints.
               </h3>
-              <p className="mt-4 max-w-xl text-slate-300">
-                Working through category-based challenges helps me build practical intuition in
-                attack paths, debugging, protocol analysis, and secure thinking across different
-                layers of a system.
+              <p className="mt-4 max-w-xl leading-[1.6] text-muted">
+                Working through category-based challenges helps me build practical intuition in attack paths,
+                debugging, protocol analysis, and secure thinking across different layers of a system.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
@@ -377,7 +373,7 @@ const CTFActivity = () => {
                   ? Object.keys(progress).map((category) => (
                       <span
                         key={category}
-                        className="rounded-full border border-cyan/20 bg-cyan/10 px-3 py-1 text-xs uppercase tracking-[0.14em] text-cyan"
+                        className="rounded-pill border border-ember/25 bg-ember/10 px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-emberBright"
                       >
                         {category}
                       </span>
@@ -387,43 +383,36 @@ const CTFActivity = () => {
             </div>
 
             <div className="relative z-10 mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-cyan/20 bg-cyan/10 p-4 backdrop-blur-sm">
-                <p className="text-sm text-cyan">Challenges solved</p>
-                <p className="mt-2 font-display text-4xl text-white">{totalSolved}</p>
+              <div className="rounded-xl2 border border-ember/25 bg-ember/10 p-4">
+                <p className="text-sm text-emberBright">Challenges solved</p>
+                <p className="mt-2 font-display text-4xl font-bold text-ink">{totalSolved}</p>
               </div>
-              <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4 backdrop-blur-sm">
-                <p className="text-sm text-slate-300">Top category</p>
-                <p className="mt-2 font-display text-2xl text-white">
-                  {topCategory ? topCategory[0] : '--'}
-                </p>
-                <p className="mt-2 text-sm text-slate-400">
-                  {topCategory ? `${topCategory[1]} solved` : 'Waiting for data'}
-                </p>
+              <div className="rounded-xl2 border border-line bg-surface2 p-4">
+                <p className="text-sm text-muted">Top category</p>
+                <p className="mt-2 font-display text-2xl font-bold text-ink">{topCategory ? topCategory[0] : '--'}</p>
+                <p className="mt-2 text-sm text-muted">{topCategory ? `${topCategory[1]} solved` : 'Waiting for data'}</p>
               </div>
             </div>
           </div>
         </Reveal>
 
         <Reveal delay={140}>
-          <div className="ctf-chart-card relative overflow-hidden rounded-[2rem] border border-white/10 p-5 shadow-card">
+          <div className="ctf-chart-card relative overflow-hidden rounded-[2rem] border border-line p-5 shadow-card">
             <div className="ctf-chart-card__orb" aria-hidden="true" />
             <div className="ctf-chart-card__ring ctf-chart-card__ring--one" aria-hidden="true" />
             <div className="ctf-chart-card__ring ctf-chart-card__ring--two" aria-hidden="true" />
             <div className="relative z-10 mb-4 px-2">
-              <h3 className="font-display text-xl text-white">CTF Challenge Categories</h3>
+              <h3 className="font-display text-xl font-bold text-ink">CTF Challenge Categories</h3>
             </div>
-            <div
-              className="ctf-chart-zone relative mx-auto h-[360px] w-full max-w-[460px]"
-              onWheel={handleChartWheel}
-            >
+            <div className="ctf-chart-zone relative mx-auto h-[360px] w-full max-w-[460px]" onWheel={handleChartWheel}>
               {hasError ? (
-                <div className="flex h-full items-center justify-center rounded-2xl border border-rose-400/20 bg-rose-400/10 p-6 text-center text-sm text-rose-200">
+                <div className="flex h-full items-center justify-center rounded-xl2 border border-rose-400/20 bg-rose-400/10 p-6 text-center text-sm text-rose-200">
                   Unable to load the CTF progress data right now.
                 </div>
               ) : null}
 
               {!hasError && !progress ? (
-                <div className="flex h-full items-center justify-center rounded-2xl border border-white/10 bg-slate-950/60 p-6 text-center text-sm text-slate-300">
+                <div className="flex h-full items-center justify-center rounded-xl2 border border-line bg-surface2 p-6 text-center text-sm text-muted">
                   Loading challenge progress...
                 </div>
               ) : null}
@@ -439,11 +428,11 @@ const CTFActivity = () => {
               ) : null}
             </div>
             {entries.length ? (
-              <ul className="relative z-10 mt-5 flex flex-wrap justify-center gap-x-5 gap-y-3 px-2 text-sm text-slate-300">
+              <ul className="relative z-10 mt-5 flex flex-wrap justify-center gap-x-5 gap-y-3 px-2 text-sm text-muted">
                 {entries.map(([label], index) => (
                   <li key={label} className="inline-flex items-center gap-2">
                     <span
-                      className="h-3 w-3 rounded-full"
+                      className="h-3 w-3 rounded-pill"
                       style={{ backgroundColor: chartColors[index % chartColors.length] }}
                       aria-hidden="true"
                     />

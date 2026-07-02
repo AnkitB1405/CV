@@ -1,6 +1,8 @@
+import { useEffect, useRef } from 'react';
 import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa6';
 import { profile } from '../data/siteData';
 import Reveal from './Reveal';
+import { smoothScrollTo } from '../utils/smoothScroll';
 import profileImage from '../../profilepic.jpeg';
 
 const socialLinks = [
@@ -10,37 +12,97 @@ const socialLinks = [
 ];
 
 const Hero = () => {
+  const heroRef = useRef(null);
+  const lightRef = useRef(null);
+  const imageRef = useRef(null);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const light = lightRef.current;
+    const image = imageRef.current;
+
+    const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const noHover = window.matchMedia('(hover: none)').matches;
+
+    if (noMotion || noHover || !hero) {
+      return undefined;
+    }
+
+    const onMove = (event) => {
+      const rect = hero.getBoundingClientRect();
+      if (light) {
+        light.style.left = `${event.clientX - rect.left}px`;
+        light.style.top = `${event.clientY - rect.top}px`;
+        light.style.opacity = '1';
+      }
+    };
+
+    const onLeave = () => {
+      if (light) {
+        light.style.opacity = '0';
+      }
+    };
+
+    const onScroll = () => {
+      if (image) {
+        image.style.transform = `translateY(${Math.min(window.scrollY * 0.06, 60)}px)`;
+      }
+    };
+
+    hero.addEventListener('mousemove', onMove);
+    hero.addEventListener('mouseleave', onLeave);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      hero.removeEventListener('mousemove', onMove);
+      hero.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+
   return (
-    <section id="home" className="relative overflow-hidden pt-20 md:pt-24">
-      <div className="absolute left-1/2 top-0 -z-10 h-[460px] w-[460px] -translate-x-1/2 rounded-full bg-cyan/20 blur-[120px]" />
-      <div className="mx-auto grid w-[min(1120px,92%)] gap-12 pb-24 lg:grid-cols-[minmax(0,1.08fr)_minmax(340px,0.72fr)] lg:items-center md:pb-28">
+    <section id="home" ref={heroRef} className="relative overflow-hidden">
+      {/* Cursor-following ember light — hero only, hidden until first move. */}
+      <div
+        ref={lightRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500"
+        style={{ background: 'radial-gradient(circle, rgba(212,106,79,0.22), transparent 70%)' }}
+      />
+
+      <div className="mx-auto grid w-[min(1180px,92%)] items-center gap-12 pb-[clamp(4rem,10vw,7rem)] pt-24 lg:grid-cols-[1.15fr_0.85fr] lg:pt-28">
         <Reveal className="order-2 lg:order-1">
-          <div className="mx-auto w-full max-w-[42rem] text-center lg:mx-0 lg:text-left">
-            <p className="mb-4 inline-flex rounded-full border border-electric/50 bg-electric/10 px-4 py-1 text-xs uppercase tracking-[0.22em] text-electric">
-              {profile.location}
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.24em] text-muted">
+              {profile.location} — {profile.role}
             </p>
-            <h1 className="font-display text-4xl font-bold leading-tight text-white md:text-6xl">
+            <h1
+              className="mt-5 font-display font-extrabold leading-[0.98] text-ink"
+              style={{ fontSize: 'clamp(2.75rem, 7vw, 5.5rem)', letterSpacing: '-0.03em', textWrap: 'balance' }}
+            >
               {profile.name}
             </h1>
-            <h2 className="mt-4 text-xl font-semibold text-cyan md:text-2xl">{profile.role}</h2>
-            <p className="mx-auto mt-6 max-w-2xl text-base text-slate-300 md:text-lg lg:mx-0">{profile.tagline}</p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
-              <a
-                href="#projects"
-                className="rounded-full bg-cyan px-6 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:shadow-neon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
+            <p className="mt-6 max-w-[60ch] text-lg leading-[1.6] text-muted">{profile.tagline}</p>
+
+            <div className="mt-9 flex flex-wrap gap-4">
+              <button
+                type="button"
+                onClick={() => smoothScrollTo('#projects')}
+                className="rounded-pill px-6 py-3 text-sm font-semibold text-[#1a0f0c] shadow-gloss transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember"
+                style={{ background: 'linear-gradient(180deg, #D46A4F 0%, #B4503A 48%, #93402d 100%)' }}
               >
                 View Projects
-              </a>
+              </button>
               <a
                 href={profile.resumeUrl}
-                className="rounded-full border border-cyan/50 bg-white/5 px-6 py-3 text-sm font-semibold text-cyan transition hover:-translate-y-0.5 hover:bg-cyan/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
                 download
+                className="rounded-pill border border-line bg-surface px-6 py-3 text-sm font-semibold text-ink transition hover:-translate-y-0.5 hover:border-ember/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember"
               >
-                Download Resume
+                Download Résumé
               </a>
             </div>
 
-            <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+            <div className="mt-8 flex flex-wrap gap-3">
               {socialLinks.map(({ label, href, icon: Icon }) => (
                 <a
                   key={label}
@@ -48,44 +110,30 @@ const Hero = () => {
                   target={href.startsWith('mailto:') ? undefined : '_blank'}
                   rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
                   aria-label={label}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-200 transition duration-300 hover:-translate-y-1 hover:border-cyan/60 hover:text-cyan hover:shadow-neon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-pill border border-line bg-surface text-muted transition hover:-translate-y-1 hover:border-ember/60 hover:text-emberBright hover:shadow-ember focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember"
                 >
                   <Icon aria-hidden="true" />
                 </a>
               ))}
             </div>
-
-            <div className="mt-10 rounded-[2rem] border border-cyan/20 bg-panel/75 p-5 shadow-card">
-              <p className="text-sm uppercase tracking-[0.2em] text-slate-400">Core Focus</p>
-              <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                {profile.expertise.map((item) => (
-                  <li
-                    key={item}
-                    className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200 transition duration-300 hover:-translate-y-1 hover:border-cyan/45 hover:shadow-neon"
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </Reveal>
 
-        <Reveal delay={110} className="order-1 animate-float lg:order-2">
-          <div className="relative flex justify-center lg:justify-center">
-            <div className="group relative h-60 w-60 overflow-hidden rounded-full border border-cyan/35 bg-gradient-to-br from-cyan/20 via-electric/15 to-transparent p-2 shadow-neon sm:h-72 sm:w-72 md:h-80 md:w-80 lg:h-[24rem] lg:w-[24rem] xl:h-[26rem] xl:w-[26rem]">
-              <div
-                className="absolute -inset-5 -z-10 rounded-full bg-cyan/15 blur-3xl"
-                aria-hidden="true"
-              />
-              <div
-                className="absolute inset-2 rounded-full border border-white/10"
-                aria-hidden="true"
-              />
+        <Reveal delay={120} className="order-1 lg:order-2">
+          <div className="relative mx-auto w-full max-w-[24rem]">
+            <div
+              aria-hidden="true"
+              className="absolute -inset-6 -z-10 rounded-[2rem] blur-3xl"
+              style={{ background: 'radial-gradient(circle at 50% 40%, rgba(180,80,58,0.32), transparent 70%)' }}
+            />
+            <div
+              ref={imageRef}
+              className="overflow-hidden rounded-[1.75rem] border border-ember/25 bg-surface shadow-card"
+            >
               <img
                 src={profileImage}
                 alt={`${profile.name} portrait`}
-                className="h-full w-full rounded-full object-cover object-[50%_25%] transition-transform duration-300 ease-out translate-x-[6%] group-hover:scale-[1.4] scale-[1.28]"
+                className="h-full w-full object-cover object-[50%_22%]"
               />
             </div>
           </div>

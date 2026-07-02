@@ -1,16 +1,164 @@
+import { useEffect, useState } from 'react';
 import { FaArrowLeft, FaGithub } from 'react-icons/fa6';
-import SectionTitle from './SectionTitle';
 import Reveal from './Reveal';
 import { projects } from '../data/siteData';
 import { navigateTo } from '../utils/navigation';
 
-const githubButtonClassName =
-  'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition';
+const slugFromHash = () => {
+  const slug = window.location.hash.replace(/^#/, '');
+  return projects.some((project) => project.slug === slug) ? slug : null;
+};
+
+const ProjectDetail = ({ project }) => (
+  <div className="detail-in">
+    <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="font-display text-2xl font-bold text-ink md:text-3xl">
+            {project.detailTitle ?? project.title}
+          </h2>
+          {project.status === 'in-progress' ? (
+            <span className="inline-flex items-center gap-2 rounded-pill border border-ember/40 bg-ember/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-emberBright">
+              <span className="status-dot" aria-hidden="true" />
+              <span className="status-glow-text">{project.statusLabel ?? 'In Progress'}</span>
+            </span>
+          ) : null}
+        </div>
+        <p className="max-w-3xl leading-[1.6] text-muted">{project.description}</p>
+      </div>
+
+      {project.github ? (
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-pill border border-ember/40 bg-ember/10 px-4 py-2 text-sm font-semibold text-emberBright transition hover:-translate-y-0.5 hover:border-ember/70 hover:shadow-ember"
+        >
+          <FaGithub aria-hidden="true" />
+          GitHub
+        </a>
+      ) : (
+        <span className="inline-flex cursor-not-allowed items-center gap-2 rounded-pill border border-line bg-surface px-4 py-2 text-sm font-semibold text-muted">
+          <FaGithub aria-hidden="true" />
+          GitHub
+        </span>
+      )}
+    </div>
+
+    <ul className="mt-5 flex flex-wrap gap-2">
+      {project.technologies.map((tech) => (
+        <li key={tech} className="rounded-pill border border-line px-3 py-1 font-mono text-xs text-muted">
+          {tech}
+        </li>
+      ))}
+    </ul>
+
+    <div className="mt-8 space-y-5">
+      {project.detailSections.map((section) => (
+        <section key={section.heading} className="rounded-xl2 border border-line bg-surface px-5 py-5 leading-[1.7] text-muted">
+          <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-emberBright">{section.heading}</h3>
+          {section.paragraphs?.map((paragraph) => (
+            <p key={paragraph} className="mt-3">
+              {paragraph}
+            </p>
+          ))}
+          {section.bullets?.length ? (
+            <ul className="mt-3 space-y-2">
+              {section.bullets.map((item) => (
+                <li key={item} className="rounded-xl2 border border-line bg-surface2 px-4 py-3 leading-6">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </section>
+      ))}
+    </div>
+
+    {project.media ? (
+      <section className="mt-8 rounded-xl2 border border-line bg-surface px-5 py-5 text-muted">
+        <h3 className="font-mono text-xs uppercase tracking-[0.18em] text-emberBright">Architecture & Visual References</h3>
+        <figure className="mt-4 overflow-hidden rounded-xl2 border border-ember/20 bg-surface2">
+          <img src={project.media.architecture.src} alt={project.media.architecture.alt} className="h-auto w-full object-cover" />
+          <figcaption className="border-t border-line px-4 py-3 leading-6 text-muted">
+            {project.media.architecture.caption}
+          </figcaption>
+        </figure>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {project.media.placeholders.map((item) => (
+            <figure
+              key={item.title}
+              className={`overflow-hidden rounded-xl2 border bg-surface2 ${item.imageUrl ? 'border-line' : 'border-dashed border-line p-5'}`}
+            >
+              {item.imageUrl ? <img src={item.imageUrl} alt={item.title} className="h-auto w-full object-contain" /> : null}
+              <figcaption className={item.imageUrl ? 'border-t border-line p-4' : ''}>
+                <h4 className="font-display text-lg text-ink">{item.title}</h4>
+                <p className="mt-3 leading-6 text-muted">{item.description}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    ) : null}
+  </div>
+);
+
+const ListItem = ({ project, active, onSelect }) => (
+  <button
+    type="button"
+    onClick={() => onSelect(project.slug)}
+    aria-current={active ? 'true' : undefined}
+    className={`group flex w-full items-stretch gap-3 rounded-xl2 border px-4 py-3 text-left transition ${
+      active ? 'border-ember/40 bg-surface' : 'border-transparent hover:bg-surface/60'
+    }`}
+  >
+    <span
+      aria-hidden="true"
+      className={`w-1 shrink-0 rounded-pill transition-all ${
+        active ? 'bg-gradient-to-b from-emberBright to-ember shadow-ember' : 'bg-line group-hover:bg-ember/40'
+      }`}
+    />
+    <span className="min-w-0">
+      <span className="flex items-center gap-2">
+        <span className={`font-display text-base font-semibold ${active ? 'text-emberBright' : 'text-ink'}`}>
+          {project.title}
+        </span>
+        {project.status === 'in-progress' ? <span className="status-dot" aria-hidden="true" /> : null}
+      </span>
+      <span className="mt-1 block truncate text-xs text-muted">{project.description}</span>
+    </span>
+  </button>
+);
 
 const ProjectsPage = () => {
+  const [selected, setSelected] = useState(() => slugFromHash() ?? projects[0].slug);
+
+  // Keep selection in sync if the hash changes externally (back button, edited URL).
+  useEffect(() => {
+    const sync = () => {
+      const slug = slugFromHash();
+      if (slug) {
+        setSelected(slug);
+      }
+    };
+    window.addEventListener('popstate', sync);
+    window.addEventListener('hashchange', sync);
+    return () => {
+      window.removeEventListener('popstate', sync);
+      window.removeEventListener('hashchange', sync);
+    };
+  }, []);
+
+  const select = (slug) => {
+    setSelected(slug);
+    window.history.replaceState(null, '', `/projects#${slug}`);
+  };
+
+  const selectedProject = projects.find((project) => project.slug === selected) ?? projects[0];
+
   return (
-    <main className="pb-16 pt-20 md:pt-24">
-      <section className="section-shell pb-6">
+    <main className="pb-20 pt-24 md:pt-28">
+      <div className="section-shell !pb-0 !pt-0">
         <Reveal>
           <a
             href="/"
@@ -18,163 +166,67 @@ const ProjectsPage = () => {
               event.preventDefault();
               navigateTo('/');
             }}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:-translate-y-0.5 hover:border-cyan/50 hover:text-cyan"
+            className="inline-flex items-center gap-2 rounded-pill border border-line bg-surface px-4 py-2 text-sm text-muted transition hover:-translate-y-0.5 hover:border-ember/50 hover:text-emberBright"
           >
             <FaArrowLeft aria-hidden="true" />
             Back Home
           </a>
         </Reveal>
-      </section>
 
-      <section className="section-shell pt-6">
-        <Reveal>
-          <SectionTitle
-            eyebrow="Projects"
-            title="Detailed Builds, Experiments, and Lab Notes"
-            description="A closer look at the systems, security projects, and infrastructure work that shape how I learn by building."
-          />
-        </Reveal>
-
-        <div className="space-y-8">
-          {projects.map((project, index) => (
-            <article
-              key={project.slug}
-              id={project.slug}
-              className="scroll-mt-32 rounded-3xl border border-white/10 bg-gradient-to-b from-panel/95 to-slate-900 p-6 shadow-card"
-            >
-              <Reveal delay={index * 80} threshold={0.01}>
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <h2 className="font-display text-2xl text-white">{project.detailTitle ?? project.title}</h2>
-                      {project.status === 'in-progress' ? (
-                        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-emerald-300">
-                          <span className="status-dot" aria-hidden="true" />
-                          <span className="status-glow-text">{project.statusLabel ?? 'In Progress'}</span>
-                        </span>
-                      ) : null}
-                    </div>
-
-                    <p className="max-w-3xl text-sm leading-7 text-slate-300">{project.description}</p>
-                  </div>
-
-                  {project.github ? (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={`${githubButtonClassName} border-cyan/30 bg-cyan/10 text-cyan hover:-translate-y-0.5 hover:border-cyan/60 hover:shadow-neon`}
-                    >
-                      <FaGithub aria-hidden="true" />
-                      GitHub
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      disabled
-                      className={`${githubButtonClassName} cursor-not-allowed border-white/10 bg-white/5 text-slate-400`}
-                    >
-                      <FaGithub aria-hidden="true" />
-                      GitHub
-                    </button>
-                  )}
-                </div>
-
-                <ul className="mt-5 flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <li
-                      key={tech}
-                      className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-slate-200"
-                    >
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-8 space-y-5">
-                  {project.detailSections.map((section) => (
-                    <section
-                      key={section.heading}
-                      className="rounded-2xl border border-white/10 bg-white/5 px-5 py-5 text-sm leading-7 text-slate-300"
-                    >
-                      <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">
-                        {section.heading}
-                      </h3>
-
-                      {section.paragraphs?.map((paragraph) => (
-                        <p key={paragraph} className="mt-3">
-                          {paragraph}
-                        </p>
-                      ))}
-
-                      {section.bullets?.length ? (
-                        <ul className="mt-3 space-y-2">
-                          {section.bullets.map((item) => (
-                            <li
-                              key={item}
-                              className="rounded-2xl border border-white/10 bg-slate-950/35 px-4 py-3 leading-6"
-                            >
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                    </section>
-                  ))}
-                </div>
-
-                {project.media ? (
-                  <section className="mt-8 rounded-2xl border border-white/10 bg-white/5 px-5 py-5 text-sm text-slate-300">
-                    <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan">
-                      Architecture & Visual References
-                    </h3>
-
-                    <figure className="mt-4 overflow-hidden rounded-2xl border border-cyan/20 bg-slate-950/50">
-                      <img
-                        src={project.media.architecture.src}
-                        alt={project.media.architecture.alt}
-                        className="h-auto w-full object-cover"
-                      />
-                      <figcaption className="border-t border-white/10 px-4 py-3 text-sm leading-6 text-slate-400">
-                        {project.media.architecture.caption}
-                      </figcaption>
-                    </figure>
-
-                    <div className="mt-4 grid gap-4 md:grid-cols-2">
-                      {project.media.placeholders.map((item) => (
-                        <figure
-                          key={item.title}
-                          className={`overflow-hidden rounded-2xl border bg-slate-950/35 ${
-                            item.imageUrl ? 'border-white/10' : 'border-dashed border-white/20 p-5'
-                          }`}
-                        >
-                          {item.imageUrl ? (
-                            <img
-                              src={item.imageUrl}
-                              alt={item.title}
-                              className="h-auto w-full object-contain"
-                            />
-                          ) : null}
-
-                          <figcaption className={item.imageUrl ? 'border-t border-white/10 p-4' : ''}>
-                            <h4 className="font-display text-lg text-white">{item.title}</h4>
-                            <p className="mt-3 leading-6 text-slate-400">{item.description}</p>
-                            {!item.imageUrl ? (
-                              <span className="mt-8 block text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                                Screenshot placeholder
-                              </span>
-                            ) : null}
-                          </figcaption>
-                        </figure>
-                      ))}
-                    </div>
-                  </section>
-                ) : null}
-              </Reveal>
-            </article>
-          ))}
+        <div className="mt-8 border-t border-line pt-8">
+          <h1
+            className="font-display text-3xl font-bold leading-[1.05] text-ink md:text-4xl"
+            style={{ letterSpacing: '-0.02em' }}
+          >
+            Detailed builds, experiments, and lab notes
+          </h1>
+          <p className="mt-3 max-w-2xl leading-[1.6] text-muted">
+            Pick a project on the left — the full breakdown swaps in place, no scrolling to find it.
+          </p>
         </div>
-      </section>
+
+        {/* Desktop: master–detail */}
+        <div className="mt-10 hidden gap-10 md:grid md:grid-cols-[minmax(0,300px)_1fr]">
+          <nav aria-label="Projects" className="sticky top-24 flex flex-col gap-2 self-start">
+            {projects.map((project) => (
+              <ListItem key={project.slug} project={project} active={project.slug === selected} onSelect={select} />
+            ))}
+          </nav>
+          <div>
+            <ProjectDetail key={selectedProject.slug} project={selectedProject} />
+          </div>
+        </div>
+
+        {/* Mobile: accordion */}
+        <div className="mt-8 flex flex-col gap-3 md:hidden">
+          {projects.map((project) => {
+            const active = project.slug === selected;
+            return (
+              <div key={project.slug} className="rounded-xl2 border border-line bg-surface2">
+                <button
+                  type="button"
+                  onClick={() => select(project.slug)}
+                  aria-expanded={active}
+                  className="flex w-full items-center gap-3 px-4 py-4 text-left"
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`h-2.5 w-2.5 rounded-pill ${active ? 'bg-gradient-to-b from-emberBright to-ember shadow-ember' : 'border border-ember/40'}`}
+                  />
+                  <span className={`font-display text-lg font-semibold ${active ? 'text-emberBright' : 'text-ink'}`}>
+                    {project.title}
+                  </span>
+                </button>
+                {active ? (
+                  <div className="border-t border-line px-4 py-5">
+                    <ProjectDetail project={project} />
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </main>
   );
 };

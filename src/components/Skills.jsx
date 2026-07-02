@@ -3,10 +3,10 @@ import Reveal from './Reveal';
 import { skills } from '../data/siteData';
 
 const skillSections = [
-  { title: 'Programming Languages', items: skills.programmingLanguages },
-  { title: 'Web Technologies', items: skills.webTechnologies },
-  { title: 'Systems & Infrastructure', items: skills.systemsAndInfrastructure },
-  { title: 'Developer Tools', items: skills.developerTools }
+  { title: 'Programming', items: skills.programmingLanguages },
+  { title: 'Web', items: skills.webTechnologies },
+  { title: 'Systems', items: skills.systemsAndInfrastructure },
+  { title: 'Tools', items: skills.developerTools }
 ];
 
 const Skills = () => {
@@ -14,22 +14,23 @@ const Skills = () => {
     <section id="skills" className="section-shell">
       <Reveal>
         <SectionTitle
-          eyebrow="Skills"
           title="Technical toolkit"
           description="A practical mix of programming, web fundamentals, Linux-oriented infrastructure work, and everyday developer tooling."
         />
       </Reveal>
 
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="flex flex-col">
         {skillSections.map((section, index) => (
-          <Reveal key={section.title} as="article" delay={index * 90}>
-            <div className="rounded-2xl border border-white/10 bg-panel/75 p-6 transition duration-300 hover:-translate-y-1 hover:border-electric/60 hover:shadow-neon">
-              <h3 className="mb-4 font-display text-xl text-white">{section.title}</h3>
+          <Reveal key={section.title} delay={index * 70}>
+            <div className="flex flex-col gap-3 border-t border-line py-6 md:flex-row md:items-baseline md:gap-10">
+              <h3 className="font-mono text-sm uppercase tracking-[0.16em] text-emberBright md:w-40 md:shrink-0">
+                {section.title}
+              </h3>
               <ul className="flex flex-wrap gap-2">
                 {section.items.map((item) => (
                   <li
                     key={item}
-                    className="rounded-full border border-cyan/30 bg-cyan/10 px-3 py-1 text-sm text-cyan"
+                    className="rounded-pill border border-line bg-surface px-3 py-1.5 text-sm text-ink transition hover:-translate-y-0.5 hover:border-ember/55 hover:text-emberBright"
                   >
                     {item}
                   </li>

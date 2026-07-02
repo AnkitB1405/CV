@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaArrowUp } from 'react-icons/fa6';
+import { smoothScrollTo } from '../utils/smoothScroll';
 
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -19,8 +20,8 @@ const BackToTop = () => {
     <button
       type="button"
       aria-label="Back to top"
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      className={`fixed bottom-5 right-5 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-cyan/35 bg-panel/85 text-cyan shadow-card backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-cyan/60 hover:shadow-neon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${
+      onClick={() => smoothScrollTo('body')}
+      className={`fixed bottom-5 right-5 z-40 inline-flex h-11 w-11 items-center justify-center rounded-pill border border-ember/35 bg-surface/85 text-emberBright shadow-card backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-ember/60 hover:shadow-ember focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember ${
         isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
       }`}
     >
