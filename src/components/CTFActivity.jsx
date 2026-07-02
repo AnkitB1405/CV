@@ -3,7 +3,7 @@ import { ArcElement, Chart, Legend, PieController, Title, Tooltip } from 'chart.
 import SectionTitle from './SectionTitle';
 import Reveal from './Reveal';
 
-const chartColors = ['#D46A4F', '#B4503A', '#E08A5B', '#93402d', '#C2543A', '#7A2E22'];
+const chartColors = ['#2DD4BF', '#14B8A6', '#5EEAD4', '#0D9488', '#17BFB0', '#0F766E'];
 const FULL_ROTATION = Math.PI * 2;
 const FRONT_ANGLE = Math.PI / 2;
 const SLICE_OFFSET = 28;
@@ -108,7 +108,7 @@ const pieDepthPlugin = {
         properties.endAngle
       );
       ctx.closePath();
-      ctx.fillStyle = 'rgba(11, 9, 8, 0.3)';
+      ctx.fillStyle = 'rgba(7, 16, 15, 0.3)';
       ctx.filter = 'blur(10px)';
       ctx.fill();
       ctx.restore();
@@ -263,10 +263,10 @@ const CTFActivity = () => {
             display: false
           },
           tooltip: {
-            backgroundColor: 'rgba(23, 17, 14, 0.95)',
-            titleColor: '#f2ece8',
-            bodyColor: '#f2ece8',
-            borderColor: 'rgba(212, 106, 79, 0.3)',
+            backgroundColor: 'rgba(14, 26, 24, 0.95)',
+            titleColor: '#E8F1EF',
+            bodyColor: '#E8F1EF',
+            borderColor: 'rgba(45, 212, 191, 0.3)',
             borderWidth: 1,
             padding: 12
           }

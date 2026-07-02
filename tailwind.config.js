@@ -4,15 +4,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: '#0B0908',
-        surface: '#17110E',
-        surface2: '#100B09',
-        ink: '#F2ECE8',
-        muted: '#A6968E',
-        ember: '#B4503A',
-        emberBright: '#D46A4F',
-        oxblood: '#7A2E22',
-        line: 'rgba(180,80,58,0.16)'
+        bg: '#07100F',
+        surface: '#0E1A18',
+        surface2: '#0A1413',
+        ink: '#E8F1EF',
+        muted: '#9CB3AE',
+        ember: '#14B8A6',
+        emberBright: '#2DD4BF',
+        oxblood: '#0F766E',
+        line: 'rgba(20,184,166,0.16)'
       },
       fontFamily: {
         display: ['"Bricolage Grotesque"', 'sans-serif'],
@@ -20,8 +20,8 @@ export default {
         mono: ['"Spline Sans Mono"', 'monospace']
       },
       boxShadow: {
-        ember: '0 0 30px rgba(180,80,58,0.28)',
-        gloss: 'inset 0 1px 0 rgba(255,255,255,0.28), 0 10px 26px rgba(180,80,58,0.30)',
+        ember: '0 0 30px rgba(20,184,166,0.28)',
+        gloss: 'inset 0 1px 0 rgba(255,255,255,0.28), 0 10px 26px rgba(20,184,166,0.30)',
         card: '0 24px 50px rgba(0,0,0,0.55)'
       },
       borderRadius: {
