@@ -28,7 +28,7 @@ const Reveal = ({ as: Tag = 'div', className = '', children, delay = 0, threshol
     <Tag
       ref={ref}
       className={`reveal ${isVisible ? 'reveal-visible' : ''} ${className}`.trim()}
-      style={{ transitionDelay: `${delay}ms`, animationDelay: `${delay}ms` }}
+      style={{ transitionDelay: `${delay}ms` }}
       {...props}
     >
       {children}

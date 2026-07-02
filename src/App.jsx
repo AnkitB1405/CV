@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import IndexRail from './components/IndexRail';
 import HomePage from './components/HomePage';
 import ProjectsPage from './components/ProjectsPage';
+import ProjectModal from './components/ProjectModal';
 import Footer from './components/Footer';
 import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
@@ -97,6 +98,7 @@ const App = () => {
         <>
           <IndexRail />
           <HomePage />
+          <ProjectModal />
         </>
       )}
       <Footer />

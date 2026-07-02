@@ -1,13 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FaArrowLeft, FaGithub } from 'react-icons/fa6';
 import Reveal from './Reveal';
 import { projects } from '../data/siteData';
 import { navigateTo } from '../utils/navigation';
 
+const statusOf = (project) => project.statusLabel ?? 'Shipped';
+const allTechs = [...new Set(projects.flatMap((project) => project.technologies))].sort();
+const allStatuses = [...new Set(projects.map(statusOf))];
+
 const slugFromHash = () => {
   const slug = window.location.hash.replace(/^#/, '');
   return projects.some((project) => project.slug === slug) ? slug : null;
 };
+
+const Chip = ({ active, onClick, children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-pressed={active}
+    className={`rounded-pill border px-3 py-1.5 font-mono text-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember ${
+      active ? 'border-ember/50 bg-ember/15 text-emberBright' : 'border-line text-muted hover:text-ink'
+    }`}
+  >
+    {children}
+  </button>
+);
 
 const ProjectDetail = ({ project }) => (
   <div className="detail-in">
@@ -132,6 +149,17 @@ const ListItem = ({ project, active, onSelect }) => (
 
 const ProjectsPage = () => {
   const [selected, setSelected] = useState(() => slugFromHash() ?? projects[0].slug);
+  const [tech, setTech] = useState(null);
+  const [status, setStatus] = useState(null);
+
+  const filtered = useMemo(
+    () =>
+      projects.filter(
+        (project) =>
+          (!tech || project.technologies.includes(tech)) && (!status || statusOf(project) === status)
+      ),
+    [tech, status]
+  );
 
   // Keep selection in sync if the hash changes externally (back button, edited URL).
   useEffect(() => {
@@ -149,12 +177,21 @@ const ProjectsPage = () => {
     };
   }, []);
 
+  // If the current selection is filtered out, fall back to the first visible project.
+  useEffect(() => {
+    if (filtered.length && !filtered.some((project) => project.slug === selected)) {
+      setSelected(filtered[0].slug);
+    }
+  }, [filtered, selected]);
+
   const select = (slug) => {
     setSelected(slug);
     window.history.replaceState(null, '', `/projects#${slug}`);
   };
 
-  const selectedProject = projects.find((project) => project.slug === selected) ?? projects[0];
+  const toggle = (setter, value) => setter((current) => (current === value ? null : value));
+
+  const selectedProject = filtered.find((project) => project.slug === selected) ?? filtered[0] ?? null;
 
   return (
     <main className="pb-20 pt-24 md:pt-28">
@@ -181,51 +218,99 @@ const ProjectsPage = () => {
             Detailed builds, experiments, and lab notes
           </h1>
           <p className="mt-3 max-w-2xl leading-[1.6] text-muted">
-            Pick a project on the left — the full breakdown swaps in place, no scrolling to find it.
+            Filter by progress or technology, then pick a project — the full breakdown swaps in place.
           </p>
         </div>
 
-        {/* Desktop: master–detail */}
-        <div className="mt-10 hidden gap-10 md:grid md:grid-cols-[minmax(0,300px)_1fr]">
-          <nav aria-label="Projects" className="sticky top-24 flex flex-col gap-2 self-start">
-            {projects.map((project) => (
-              <ListItem key={project.slug} project={project} active={project.slug === selected} onSelect={select} />
+        {/* Filter chips — derived from the data */}
+        <div className="mt-8 space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="mr-1 font-mono text-xs uppercase tracking-[0.14em] text-muted">progress</span>
+            {allStatuses.map((value) => (
+              <Chip key={value} active={status === value} onClick={() => toggle(setStatus, value)}>
+                {value}
+              </Chip>
             ))}
-          </nav>
-          <div>
-            <ProjectDetail key={selectedProject.slug} project={selectedProject} />
           </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="mr-1 font-mono text-xs uppercase tracking-[0.14em] text-muted">tech</span>
+            {allTechs.map((value) => (
+              <Chip key={value} active={tech === value} onClick={() => toggle(setTech, value)}>
+                {value}
+              </Chip>
+            ))}
+            {(tech || status) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setTech(null);
+                  setStatus(null);
+                }}
+                className="ml-1 font-mono text-xs text-muted underline decoration-line underline-offset-4 transition hover:text-emberBright"
+              >
+                clear
+              </button>
+            )}
+          </div>
+          <p className="font-mono text-xs text-muted">
+            {filtered.length} {filtered.length === 1 ? 'result' : 'results'}
+          </p>
         </div>
 
-        {/* Mobile: accordion */}
-        <div className="mt-8 flex flex-col gap-3 md:hidden">
-          {projects.map((project) => {
-            const active = project.slug === selected;
-            return (
-              <div key={project.slug} className="rounded-xl2 border border-line bg-surface2">
-                <button
-                  type="button"
-                  onClick={() => select(project.slug)}
-                  aria-expanded={active}
-                  className="flex w-full items-center gap-3 px-4 py-4 text-left"
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`h-2.5 w-2.5 rounded-pill ${active ? 'bg-gradient-to-b from-emberBright to-ember shadow-ember' : 'border border-ember/40'}`}
+        {selectedProject ? (
+          <>
+            {/* Desktop: master–detail */}
+            <div className="mt-10 hidden gap-10 md:grid md:grid-cols-[minmax(0,300px)_1fr]">
+              <nav aria-label="Projects" className="sticky top-24 flex flex-col gap-2 self-start">
+                {filtered.map((project) => (
+                  <ListItem
+                    key={project.slug}
+                    project={project}
+                    active={project.slug === selectedProject.slug}
+                    onSelect={select}
                   />
-                  <span className={`font-display text-lg font-semibold ${active ? 'text-emberBright' : 'text-ink'}`}>
-                    {project.title}
-                  </span>
-                </button>
-                {active ? (
-                  <div className="border-t border-line px-4 py-5">
-                    <ProjectDetail project={project} />
-                  </div>
-                ) : null}
+                ))}
+              </nav>
+              <div>
+                <ProjectDetail key={selectedProject.slug} project={selectedProject} />
               </div>
-            );
-          })}
-        </div>
+            </div>
+
+            {/* Mobile: accordion */}
+            <div className="mt-8 flex flex-col gap-3 md:hidden">
+              {filtered.map((project) => {
+                const active = project.slug === selectedProject.slug;
+                return (
+                  <div key={project.slug} className="rounded-xl2 border border-line bg-surface2">
+                    <button
+                      type="button"
+                      onClick={() => select(project.slug)}
+                      aria-expanded={active}
+                      className="flex w-full items-center gap-3 px-4 py-4 text-left"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={`h-2.5 w-2.5 rounded-pill ${active ? 'bg-gradient-to-b from-emberBright to-ember shadow-ember' : 'border border-ember/40'}`}
+                      />
+                      <span className={`font-display text-lg font-semibold ${active ? 'text-emberBright' : 'text-ink'}`}>
+                        {project.title}
+                      </span>
+                    </button>
+                    {active ? (
+                      <div className="border-t border-line px-4 py-5">
+                        <ProjectDetail project={project} />
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <p className="mt-10 rounded-xl2 border border-dashed border-line bg-surface2 px-6 py-10 text-center font-mono text-sm text-muted">
+            no projects match this filter
+          </p>
+        )}
       </div>
     </main>
   );
