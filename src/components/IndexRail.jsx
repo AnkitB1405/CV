@@ -17,15 +17,20 @@ const R = 124; // arc radius (px) when expanded
 const STEP = 19; // degrees between neighbouring items on the arc
 const BASE_X = 61; // x offset of the focused item (arc's rightmost point)
 const GAP = 23; // vertical spacing (px) between dots when collapsed
-const WHEEL_SENS = 0.0035; // lower = slower scroll roll
+const WHEEL_SENS = 0.0035; // lower = slower wheel roll
+
+// Velocity scrub: cursor distance from the dial's center drives auto-scroll speed.
+const HALF = 231; // ~half the expanded rail height (px)
+const DEAD = 20; // neutral zone around center where nothing scrolls (px)
+const MAX_SPEED = 3.0; // items/sec at the far edge (kept gentle on purpose)
 
 const IndexRail = () => {
   const [active, setActive] = useState('about');
   const [expanded, setExpanded] = useState(false);
-  const [focus, setFocus] = useState(0); // fractional index of the focused item
-  const [pointerY, setPointerY] = useState(0); // focus point, in px from the rail's center
+  const [focus, setFocus] = useState(0); // fractional index of the focused (centered) item
   const [sheetOpen, setSheetOpen] = useState(false);
   const navRef = useRef(null);
+  const offsetRef = useRef(0); // cursor offset from the dial's center, in px
 
   const activeIndex = Math.max(0, sections.findIndex((section) => section.id === active));
 
@@ -55,23 +60,42 @@ const IndexRail = () => {
   useEffect(() => {
     if (!expanded) {
       setFocus(activeIndex);
-      setPointerY(0);
+      offsetRef.current = 0;
     }
   }, [activeIndex, expanded]);
 
-  // Point-to-select: the cursor's Y is the focus point. focus follows the cursor so the
-  // highlighted item is the one under the pointer; pointerY re-centers the arc on it.
   const trackPointer = (clientY) => {
     const rect = navRef.current?.getBoundingClientRect();
-    if (!rect) {
-      return;
+    if (rect) {
+      offsetRef.current = clientY - (rect.top + rect.height / 2);
     }
-    const t = (clientY - rect.top) / rect.height; // 0 (top) → 1 (bottom)
-    setFocus(Math.min(N - 1, Math.max(0, t * (N - 1))));
-    setPointerY(clientY - (rect.top + rect.height / 2));
   };
 
-  // Wheel rolls items through the same focus point (pointerY stays put), slower & smooth.
+  // Auto-scroll loop: the further the cursor sits from center, the faster items roll
+  // through the fixed focus point. Dead zone in the middle lets you settle on an item.
+  useEffect(() => {
+    if (!expanded) {
+      return undefined;
+    }
+    let raf;
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      const off = offsetRef.current;
+      const mag = Math.abs(off) - DEAD;
+      if (mag > 0) {
+        const norm = Math.min(1, mag / (HALF - DEAD));
+        const velocity = Math.sign(off) * norm * MAX_SPEED;
+        setFocus((f) => Math.min(N - 1, Math.max(0, f + velocity * dt)));
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [expanded]);
+
+  // Wheel rolls items through the same fixed focus point (slow, fractional).
   useEffect(() => {
     const el = navRef.current;
     if (!el) {
@@ -106,7 +130,10 @@ const IndexRail = () => {
           setExpanded(true);
           trackPointer(event.clientY);
         }}
-        onMouseLeave={() => setExpanded(false)}
+        onMouseLeave={() => {
+          setExpanded(false);
+          offsetRef.current = 0;
+        }}
         onMouseMove={(event) => {
           if (expanded) {
             trackPointer(event.clientY);
@@ -125,20 +152,20 @@ const IndexRail = () => {
           }`}
         />
 
-        {/* Focus marker — follows the pointer, ringing whichever item is centered. */}
+        {/* Fixed focus marker at the dial's center — the item ringed here is selected. */}
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute h-6 w-6 -translate-y-1/2 rounded-pill border border-ember/50 transition-opacity duration-500 ${
+          className={`pointer-events-none absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-pill border border-ember/50 transition-opacity duration-500 ${
             expanded ? 'opacity-70' : 'opacity-0'
           }`}
-          style={{ left: `${BASE_X - 8}px`, top: `calc(50% + ${pointerY}px)` }}
+          style={{ left: `${BASE_X - 8}px` }}
         />
 
         {sections.map(({ id, label }, i) => {
           const dist = i - focus;
           const theta = (dist * STEP * Math.PI) / 180;
           const x = expanded ? Math.max(6, BASE_X - R * (1 - Math.cos(theta))) : 4;
-          const y = expanded ? pointerY + R * Math.sin(theta) : (i - (N - 1) / 2) * GAP;
+          const y = expanded ? R * Math.sin(theta) : (i - (N - 1) / 2) * GAP;
           const away = Math.abs(dist);
           const scale = expanded ? Math.max(0.6, 1 - away * 0.12) : 0.9;
           const opacity = expanded ? Math.max(0, 1 - away * 0.26) : 1;
