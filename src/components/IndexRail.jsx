@@ -13,15 +13,17 @@ const sections = [
 ];
 
 const N = sections.length;
-const R = 118; // arc radius (px) when expanded
+const R = 124; // arc radius (px) when expanded
 const STEP = 19; // degrees between neighbouring items on the arc
-const BASE_X = 58; // x offset of the centered item (arc's rightmost point)
-const GAP = 22; // vertical spacing (px) between dots when collapsed
+const BASE_X = 61; // x offset of the focused item (arc's rightmost point)
+const GAP = 23; // vertical spacing (px) between dots when collapsed
+const WHEEL_SENS = 0.0035; // lower = slower scroll roll
 
 const IndexRail = () => {
   const [active, setActive] = useState('about');
   const [expanded, setExpanded] = useState(false);
-  const [focus, setFocus] = useState(0); // fractional index sitting at the center point
+  const [focus, setFocus] = useState(0); // fractional index of the focused item
+  const [pointerY, setPointerY] = useState(0); // focus point, in px from the rail's center
   const [sheetOpen, setSheetOpen] = useState(false);
   const navRef = useRef(null);
 
@@ -53,11 +55,23 @@ const IndexRail = () => {
   useEffect(() => {
     if (!expanded) {
       setFocus(activeIndex);
+      setPointerY(0);
     }
   }, [activeIndex, expanded]);
 
-  // Wheel over the dial rolls items through the center (non-passive so we can stop the
-  // page from scrolling; data-lenis-prevent keeps Lenis out of it too).
+  // Point-to-select: the cursor's Y is the focus point. focus follows the cursor so the
+  // highlighted item is the one under the pointer; pointerY re-centers the arc on it.
+  const trackPointer = (clientY) => {
+    const rect = navRef.current?.getBoundingClientRect();
+    if (!rect) {
+      return;
+    }
+    const t = (clientY - rect.top) / rect.height; // 0 (top) → 1 (bottom)
+    setFocus(Math.min(N - 1, Math.max(0, t * (N - 1))));
+    setPointerY(clientY - (rect.top + rect.height / 2));
+  };
+
+  // Wheel rolls items through the same focus point (pointerY stays put), slower & smooth.
   useEffect(() => {
     const el = navRef.current;
     if (!el) {
@@ -68,23 +82,11 @@ const IndexRail = () => {
         return;
       }
       event.preventDefault();
-      setFocus((current) => Math.min(N - 1, Math.max(0, Math.round(current) + (event.deltaY > 0 ? 1 : -1))));
+      setFocus((current) => Math.min(N - 1, Math.max(0, current + event.deltaY * WHEEL_SENS)));
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
   }, [expanded]);
-
-  const onMouseMove = (event) => {
-    if (!expanded) {
-      return;
-    }
-    const rect = navRef.current?.getBoundingClientRect();
-    if (!rect) {
-      return;
-    }
-    const t = (event.clientY - rect.top) / rect.height; // 0 (top) → 1 (bottom)
-    setFocus(Math.min(N - 1, Math.max(0, t * (N - 1))));
-  };
 
   const go = (id) => {
     smoothScrollTo(`#${id}`);
@@ -100,36 +102,43 @@ const IndexRail = () => {
       <nav
         ref={navRef}
         aria-label="Section navigation"
-        onMouseEnter={() => setExpanded(true)}
+        onMouseEnter={(event) => {
+          setExpanded(true);
+          trackPointer(event.clientY);
+        }}
         onMouseLeave={() => setExpanded(false)}
-        onMouseMove={onMouseMove}
+        onMouseMove={(event) => {
+          if (expanded) {
+            trackPointer(event.clientY);
+          }
+        }}
         data-lenis-prevent
         className={`fixed left-2 top-1/2 z-30 hidden -translate-y-1/2 lg:block ${
-          expanded ? 'h-[440px] w-[236px]' : 'h-[220px] w-16'
+          expanded ? 'h-[462px] w-[248px]' : 'h-[220px] w-16'
         } transition-[width,height] duration-500 ease-out`}
       >
         {/* Semicircular disk backdrop */}
         <div
           aria-hidden="true"
           className={`pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 rounded-r-full border border-line bg-surface/70 backdrop-blur transition-all duration-500 ease-out ${
-            expanded ? 'h-[400px] w-[188px] opacity-100' : 'h-[200px] w-10 opacity-0'
+            expanded ? 'h-[420px] w-[198px] opacity-100' : 'h-[200px] w-10 opacity-0'
           }`}
         />
 
-        {/* Center focus marker */}
+        {/* Focus marker — follows the pointer, ringing whichever item is centered. */}
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-pill border border-ember/50 transition-opacity duration-500 ${
+          className={`pointer-events-none absolute h-6 w-6 -translate-y-1/2 rounded-pill border border-ember/50 transition-opacity duration-500 ${
             expanded ? 'opacity-70' : 'opacity-0'
           }`}
-          style={{ left: `${BASE_X - 8}px` }}
+          style={{ left: `${BASE_X - 8}px`, top: `calc(50% + ${pointerY}px)` }}
         />
 
         {sections.map(({ id, label }, i) => {
           const dist = i - focus;
           const theta = (dist * STEP * Math.PI) / 180;
           const x = expanded ? Math.max(6, BASE_X - R * (1 - Math.cos(theta))) : 4;
-          const y = expanded ? R * Math.sin(theta) : (i - (N - 1) / 2) * GAP;
+          const y = expanded ? pointerY + R * Math.sin(theta) : (i - (N - 1) / 2) * GAP;
           const away = Math.abs(dist);
           const scale = expanded ? Math.max(0.6, 1 - away * 0.12) : 0.9;
           const opacity = expanded ? Math.max(0, 1 - away * 0.26) : 1;
