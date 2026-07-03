@@ -12,11 +12,20 @@ const sections = [
   { id: 'contact', label: 'Contact' }
 ];
 
+const N = sections.length;
+const R = 118; // arc radius (px) when expanded
+const STEP = 19; // degrees between neighbouring items on the arc
+const BASE_X = 58; // x offset of the centered item (arc's rightmost point)
+const GAP = 22; // vertical spacing (px) between dots when collapsed
+
 const IndexRail = () => {
   const [active, setActive] = useState('about');
+  const [expanded, setExpanded] = useState(false);
+  const [focus, setFocus] = useState(0); // fractional index sitting at the center point
   const [sheetOpen, setSheetOpen] = useState(false);
-  const activeRef = useRef(active);
-  activeRef.current = active;
+  const navRef = useRef(null);
+
+  const activeIndex = Math.max(0, sections.findIndex((section) => section.id === active));
 
   // Scroll-spy: mark the section crossing the viewport's middle band as active.
   useEffect(() => {
@@ -40,42 +49,121 @@ const IndexRail = () => {
     return () => observer.disconnect();
   }, []);
 
+  // While collapsed, keep the dial centered on the active section so it opens there.
+  useEffect(() => {
+    if (!expanded) {
+      setFocus(activeIndex);
+    }
+  }, [activeIndex, expanded]);
+
+  // Wheel over the dial rolls items through the center (non-passive so we can stop the
+  // page from scrolling; data-lenis-prevent keeps Lenis out of it too).
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) {
+      return undefined;
+    }
+    const onWheel = (event) => {
+      if (!expanded) {
+        return;
+      }
+      event.preventDefault();
+      setFocus((current) => Math.min(N - 1, Math.max(0, Math.round(current) + (event.deltaY > 0 ? 1 : -1))));
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [expanded]);
+
+  const onMouseMove = (event) => {
+    if (!expanded) {
+      return;
+    }
+    const rect = navRef.current?.getBoundingClientRect();
+    if (!rect) {
+      return;
+    }
+    const t = (event.clientY - rect.top) / rect.height; // 0 (top) → 1 (bottom)
+    setFocus(Math.min(N - 1, Math.max(0, t * (N - 1))));
+  };
+
   const go = (id) => {
     smoothScrollTo(`#${id}`);
+    setExpanded(false);
     setSheetOpen(false);
   };
 
+  const centered = Math.round(focus);
+
   return (
     <>
-      {/* Desktop rail — slim dots that expand to labels on hover; active label always shown. */}
+      {/* Desktop rail — a compact dot column that fans into a camera-style dial on hover. */}
       <nav
+        ref={navRef}
         aria-label="Section navigation"
-        className="group/rail fixed left-4 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-1 rounded-xl2 border border-transparent px-3 py-4 transition-colors duration-300 hover:border-line hover:bg-surface/80 hover:backdrop-blur lg:flex"
+        onMouseEnter={() => setExpanded(true)}
+        onMouseLeave={() => setExpanded(false)}
+        onMouseMove={onMouseMove}
+        data-lenis-prevent
+        className={`fixed left-2 top-1/2 z-30 hidden -translate-y-1/2 lg:block ${
+          expanded ? 'h-[440px] w-[236px]' : 'h-[220px] w-16'
+        } transition-[width,height] duration-500 ease-out`}
       >
-        {sections.map(({ id, label }) => {
+        {/* Semicircular disk backdrop */}
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 rounded-r-full border border-line bg-surface/70 backdrop-blur transition-all duration-500 ease-out ${
+            expanded ? 'h-[400px] w-[188px] opacity-100' : 'h-[200px] w-10 opacity-0'
+          }`}
+        />
+
+        {/* Center focus marker */}
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-pill border border-ember/50 transition-opacity duration-500 ${
+            expanded ? 'opacity-70' : 'opacity-0'
+          }`}
+          style={{ left: `${BASE_X - 8}px` }}
+        />
+
+        {sections.map(({ id, label }, i) => {
+          const dist = i - focus;
+          const theta = (dist * STEP * Math.PI) / 180;
+          const x = expanded ? Math.max(6, BASE_X - R * (1 - Math.cos(theta))) : 4;
+          const y = expanded ? R * Math.sin(theta) : (i - (N - 1) / 2) * GAP;
+          const away = Math.abs(dist);
+          const scale = expanded ? Math.max(0.6, 1 - away * 0.12) : 0.9;
+          const opacity = expanded ? Math.max(0, 1 - away * 0.26) : 1;
+          const isCentered = expanded && i === centered;
           const isActive = active === id;
+          const lit = isCentered || (!expanded && isActive);
           return (
             <button
               key={id}
               type="button"
               onClick={() => go(id)}
               aria-current={isActive ? 'true' : undefined}
-              className="flex items-center gap-3 rounded-pill py-1.5 pr-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember"
+              style={{
+                transform: `translate(${x}px, calc(${y}px - 50%)) scale(${scale})`,
+                transformOrigin: 'left center',
+                opacity,
+                pointerEvents: opacity < 0.08 ? 'none' : undefined
+              }}
+              className="absolute left-0 top-1/2 flex items-center gap-3 rounded-pill py-1.5 pl-1 text-left transition-[transform,opacity] duration-500 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember motion-reduce:transition-none"
             >
               <span
                 aria-hidden="true"
                 className={`h-2.5 w-2.5 shrink-0 rounded-pill transition-all duration-300 ${
-                  isActive
-                    ? 'bg-gradient-to-b from-emberBright to-ember shadow-ember'
-                    : 'border border-ember/40 bg-transparent group-hover/rail:bg-ember/25'
+                  lit
+                    ? 'scale-110 bg-gradient-to-b from-emberBright to-ember shadow-ember'
+                    : isActive
+                      ? 'border border-ember/60 bg-ember/40'
+                      : 'border border-ember/40 bg-transparent'
                 }`}
               />
               <span
-                className={`whitespace-nowrap font-mono text-xs uppercase tracking-[0.14em] transition-all duration-300 ${
-                  isActive
-                    ? 'text-emberBright opacity-100'
-                    : 'text-muted opacity-0 -translate-x-2 group-hover/rail:translate-x-0 group-hover/rail:opacity-100'
-                }`}
+                className={`overflow-hidden whitespace-nowrap font-mono text-xs uppercase tracking-[0.14em] transition-all duration-300 ${
+                  expanded ? 'max-w-[130px] opacity-100' : 'max-w-0 opacity-0'
+                } ${isCentered ? 'text-emberBright' : 'text-muted'}`}
               >
                 {label}
               </span>
