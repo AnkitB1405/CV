@@ -22,7 +22,7 @@ const WHEEL_SENS = 0.0035; // lower = slower wheel roll
 // Velocity scrub: cursor distance from the dial's center drives auto-scroll speed.
 const HALF = 231; // ~half the expanded rail height (px)
 const DEAD = 20; // neutral zone around center where nothing scrolls (px)
-const MAX_SPEED = 3.0; // items/sec at the far edge (kept gentle on purpose)
+const MAX_SPEED = 6.0; // items/sec at the far edge
 
 const IndexRail = () => {
   const [active, setActive] = useState('about');
