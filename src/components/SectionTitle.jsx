@@ -10,7 +10,7 @@ const SectionTitle = ({ title, description }) => {
       >
         {title}
       </h2>
-      {description ? <p className="mt-4 leading-[1.6] text-muted">{description}</p> : null}
+      {description ? <p className="mt-4 text-lg leading-[1.6] text-muted">{description}</p> : null}
     </header>
   );
 };
