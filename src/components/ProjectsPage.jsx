@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { FaArrowLeft, FaGithub } from 'react-icons/fa6';
+import { FaArrowLeft, FaChevronDown, FaGithub } from 'react-icons/fa6';
 import Reveal from './Reveal';
 import { projects } from '../data/siteData';
 import { navigateTo } from '../utils/navigation';
@@ -151,6 +151,9 @@ const ProjectsPage = () => {
   const [selected, setSelected] = useState(() => slugFromHash() ?? projects[0].slug);
   const [tech, setTech] = useState(null);
   const [status, setStatus] = useState(null);
+  // Mobile-only: the accordion can be fully collapsed. Desktop always keeps a detail pane,
+  // so this lives separate from `selected` (which stays defined for the master–detail view).
+  const [mobileOpen, setMobileOpen] = useState(true);
 
   const filtered = useMemo(
     () =>
@@ -276,27 +279,39 @@ const ProjectsPage = () => {
               </div>
             </div>
 
-            {/* Mobile: accordion */}
+            {/* Mobile: accordion — tap an open row's title to collapse it (no split view here). */}
             <div className="mt-8 flex flex-col gap-3 md:hidden">
               {filtered.map((project) => {
                 const active = project.slug === selectedProject.slug;
+                const open = active && mobileOpen;
                 return (
                   <div key={project.slug} className="rounded-xl2 border border-line bg-surface2">
                     <button
                       type="button"
-                      onClick={() => select(project.slug)}
-                      aria-expanded={active}
+                      onClick={() => {
+                        if (active) {
+                          setMobileOpen((current) => !current);
+                        } else {
+                          select(project.slug);
+                          setMobileOpen(true);
+                        }
+                      }}
+                      aria-expanded={open}
                       className="flex w-full items-center gap-3 px-4 py-4 text-left"
                     >
                       <span
                         aria-hidden="true"
-                        className={`h-2.5 w-2.5 rounded-pill ${active ? 'bg-gradient-to-b from-emberBright to-ember shadow-ember' : 'border border-ember/40'}`}
+                        className={`h-2.5 w-2.5 rounded-pill ${open ? 'bg-gradient-to-b from-emberBright to-ember shadow-ember' : 'border border-ember/40'}`}
                       />
-                      <span className={`font-display text-lg font-semibold ${active ? 'text-emberBright' : 'text-ink'}`}>
+                      <span className={`font-display text-lg font-semibold ${open ? 'text-emberBright' : 'text-ink'}`}>
                         {project.title}
                       </span>
+                      <FaChevronDown
+                        aria-hidden="true"
+                        className={`ml-auto shrink-0 text-sm transition-transform duration-300 ${open ? 'rotate-180 text-emberBright' : 'text-muted'}`}
+                      />
                     </button>
-                    {active ? (
+                    {open ? (
                       <div className="border-t border-line px-4 py-5">
                         <ProjectDetail project={project} />
                       </div>
