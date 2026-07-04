@@ -352,7 +352,7 @@ const CTFActivity = () => {
       </Reveal>
 
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <Reveal delay={80}>
+        <Reveal delay={80} className="min-w-0">
           <div className="ctf-shell flex h-full flex-col justify-between overflow-hidden rounded-[2rem] border border-line p-6 shadow-card">
             <div className="ctf-shell__grid" aria-hidden="true" />
             <div className="ctf-shell__glow ctf-shell__glow--one" aria-hidden="true" />
@@ -396,7 +396,7 @@ const CTFActivity = () => {
           </div>
         </Reveal>
 
-        <Reveal delay={140}>
+        <Reveal delay={140} className="min-w-0">
           <div className="ctf-chart-card relative overflow-hidden rounded-[2rem] border border-line p-5 shadow-card">
             <div className="ctf-chart-card__orb" aria-hidden="true" />
             <div className="ctf-chart-card__ring ctf-chart-card__ring--one" aria-hidden="true" />
