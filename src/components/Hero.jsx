@@ -71,7 +71,7 @@ const Hero = () => {
       />
 
       <div className="mx-auto grid w-[min(1180px,92%)] items-center gap-12 pb-[clamp(4rem,10vw,7rem)] pt-24 lg:grid-cols-[1.15fr_0.85fr] lg:pt-28">
-        <Reveal className="order-2 lg:order-1">
+        <Reveal>
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.24em] text-muted">
               {profile.location} — {profile.role}
@@ -119,7 +119,7 @@ const Hero = () => {
           </div>
         </Reveal>
 
-        <Reveal delay={120} className="order-1 lg:order-2">
+        <Reveal delay={120}>
           <div className="group relative mx-auto w-full max-w-[24rem]">
             <div
               aria-hidden="true"
