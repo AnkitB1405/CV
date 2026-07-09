@@ -6,6 +6,8 @@ import { navigateTo } from '../utils/navigation';
 import { openProject } from '../utils/ui';
 
 const Projects = () => {
+  // Home page shows only featured projects; the full list lives on /projects.
+  const featured = projects.filter((project) => project.featured);
   return (
     <section id="projects" className="section-shell">
       <Reveal>
@@ -16,7 +18,7 @@ const Projects = () => {
       </Reveal>
 
       <div className="flex flex-col">
-        {projects.map((project, index) => (
+        {featured.map((project, index) => (
           <Reveal key={project.slug} delay={index * 90}>
             <button
               type="button"
