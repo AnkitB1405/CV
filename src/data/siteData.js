@@ -201,6 +201,74 @@ export const projects = [
     github: 'https://github.com/AnkitB1405/Cowrie-Setup'
   },
   {
+    slug: 'linux-log-parser',
+    title: 'Linux Log Parser',
+    detailTitle: 'Linux Log Parser — Detection Engine',
+    status: 'in-progress',
+    statusLabel: 'In Progress',
+    featured: true,
+    cardDescription:
+      'Lightweight log-analysis and detection engine for Linux that normalizes system logs into a common event schema and runs rule-based detectors over the stream — brute force, service anomalies, credential compromise, distributed behaviour, and short-session anomalies — with tiered severity. Being built toward a small-scale SIEM-like platform with dashboards and Graphify integration.',
+    description:
+      'An in-progress detection-engineering project that parses Linux logs into normalized events and runs a rule-based engine to surface suspicious SSH activity, building toward a small-scale SIEM with alerting and visual analytics.',
+    technologies: ['Python', 'Detection Engineering', 'Log Parsing', 'SIEM', 'Threat Detection'],
+    detailSections: [
+      {
+        heading: 'Overview',
+        paragraphs: [
+          'Linux Log Parser is an ongoing cybersecurity project focused on building a lightweight log-analysis and detection engine for Linux hosts, starting from real homelab log sources.',
+          'The goal is to grow it into a small-scale, SIEM-like platform that can normalize events, detect malicious or anomalous behaviour through rules, raise alerts, and eventually support dashboards and AI-assisted incident analysis.'
+        ]
+      },
+      {
+        heading: 'Parsing & Normalization',
+        paragraphs: [
+          'Raw logs are parsed into a common, structured event schema so downstream detection works against consistent fields rather than free-form text. The current focus is a dedicated SSH parser.',
+          'The SSH parser recognizes successful and failed logins, invalid users, authentication and PAM failures, session open/close events, and SSH service start/stop, emitting normalized events with fields like event type, username, source IP, and timestamp.'
+        ]
+      },
+      {
+        heading: 'Detection Engine',
+        paragraphs: [
+          'A rule-based engine runs five independent detectors over the normalized event stream: brute force (fast/slow attempts, root targeting, PAM correlation, unknown-root logins), SSH service anomaly (repeated restart/instability), credential compromise (failed-login bursts followed by a success on the same user and IP), behaviour analysis (distributed or patterned activity across sliding time windows), and session anomaly (abnormally short sessions).',
+          'Detections are combined and correlated across time windows so weak single signals can escalate when they cluster, mirroring how a defender would triage suspicious SSH activity.'
+        ]
+      },
+      {
+        heading: 'Severity & Alerting',
+        paragraphs: [
+          'Findings are graded across Monitor, Medium, and High severity tiers — for example, a single PAM signal reads as Medium, while multiple PAM signals inside a short window escalate to High.',
+          'This tiering keeps low-signal noise observable without drowning out the events that actually warrant investigation.'
+        ]
+      },
+      {
+        heading: 'Roadmap',
+        paragraphs: [
+          'Planned work extends the engine beyond SSH to more log sources, richer normalization, alert generation, and visual analytics through dashboards and Graphify integration, with AI-assisted incident analysis as later-stage work.',
+          'Project engineering is documented alongside the code through a development journal, roadmap, architecture notes, and a threat model.'
+        ]
+      },
+      {
+        heading: 'Key Skills & Technologies',
+        bullets: [
+          'Log parsing and normalization into a common event schema',
+          'Rule-based detection engineering across multiple correlated detectors',
+          'SSH attack modeling: brute force, credential compromise, and anomalies',
+          'Sliding-window behavioural analysis for distributed activity',
+          'Tiered severity scoring and alert-oriented triage',
+          'SIEM-style architecture with planned dashboards and Graphify integration'
+        ]
+      },
+      {
+        heading: 'Summary',
+        paragraphs: [
+          'The project is a hands-on study of detection engineering — turning noisy Linux logs into normalized events and correlated, severity-graded detections that form the core of a growing, homegrown SIEM.'
+        ]
+      }
+    ],
+    github: 'https://github.com/AnkitB1405/Linux-Log-Parser'
+  },
+  {
     slug: 'telemetry-collection-system',
     title: 'Telemetry Collection System',
     cardDescription:
@@ -320,74 +388,6 @@ export const projects = [
       }
     ],
     github: 'https://github.com/AnkitB1405/Disease-Detection'
-  },
-  {
-    slug: 'linux-log-parser',
-    title: 'Linux Log Parser',
-    detailTitle: 'Linux Log Parser — Detection Engine',
-    status: 'in-progress',
-    statusLabel: 'In Progress',
-    featured: true,
-    cardDescription:
-      'Lightweight log-analysis and detection engine for Linux that normalizes system logs into a common event schema and runs rule-based detectors over the stream — brute force, service anomalies, credential compromise, distributed behaviour, and short-session anomalies — with tiered severity. Being built toward a small-scale SIEM-like platform with dashboards and Graphify integration.',
-    description:
-      'An in-progress detection-engineering project that parses Linux logs into normalized events and runs a rule-based engine to surface suspicious SSH activity, building toward a small-scale SIEM with alerting and visual analytics.',
-    technologies: ['Python', 'Detection Engineering', 'Log Parsing', 'SIEM', 'Threat Detection'],
-    detailSections: [
-      {
-        heading: 'Overview',
-        paragraphs: [
-          'Linux Log Parser is an ongoing cybersecurity project focused on building a lightweight log-analysis and detection engine for Linux hosts, starting from real homelab log sources.',
-          'The goal is to grow it into a small-scale, SIEM-like platform that can normalize events, detect malicious or anomalous behaviour through rules, raise alerts, and eventually support dashboards and AI-assisted incident analysis.'
-        ]
-      },
-      {
-        heading: 'Parsing & Normalization',
-        paragraphs: [
-          'Raw logs are parsed into a common, structured event schema so downstream detection works against consistent fields rather than free-form text. The current focus is a dedicated SSH parser.',
-          'The SSH parser recognizes successful and failed logins, invalid users, authentication and PAM failures, session open/close events, and SSH service start/stop, emitting normalized events with fields like event type, username, source IP, and timestamp.'
-        ]
-      },
-      {
-        heading: 'Detection Engine',
-        paragraphs: [
-          'A rule-based engine runs five independent detectors over the normalized event stream: brute force (fast/slow attempts, root targeting, PAM correlation, unknown-root logins), SSH service anomaly (repeated restart/instability), credential compromise (failed-login bursts followed by a success on the same user and IP), behaviour analysis (distributed or patterned activity across sliding time windows), and session anomaly (abnormally short sessions).',
-          'Detections are combined and correlated across time windows so weak single signals can escalate when they cluster, mirroring how a defender would triage suspicious SSH activity.'
-        ]
-      },
-      {
-        heading: 'Severity & Alerting',
-        paragraphs: [
-          'Findings are graded across Monitor, Medium, and High severity tiers — for example, a single PAM signal reads as Medium, while multiple PAM signals inside a short window escalate to High.',
-          'This tiering keeps low-signal noise observable without drowning out the events that actually warrant investigation.'
-        ]
-      },
-      {
-        heading: 'Roadmap',
-        paragraphs: [
-          'Planned work extends the engine beyond SSH to more log sources, richer normalization, alert generation, and visual analytics through dashboards and Graphify integration, with AI-assisted incident analysis as later-stage work.',
-          'Project engineering is documented alongside the code through a development journal, roadmap, architecture notes, and a threat model.'
-        ]
-      },
-      {
-        heading: 'Key Skills & Technologies',
-        bullets: [
-          'Log parsing and normalization into a common event schema',
-          'Rule-based detection engineering across multiple correlated detectors',
-          'SSH attack modeling: brute force, credential compromise, and anomalies',
-          'Sliding-window behavioural analysis for distributed activity',
-          'Tiered severity scoring and alert-oriented triage',
-          'SIEM-style architecture with planned dashboards and Graphify integration'
-        ]
-      },
-      {
-        heading: 'Summary',
-        paragraphs: [
-          'The project is a hands-on study of detection engineering — turning noisy Linux logs into normalized events and correlated, severity-graded detections that form the core of a growing, homegrown SIEM.'
-        ]
-      }
-    ],
-    github: 'https://github.com/AnkitB1405/Linux-Log-Parser'
   }
 ];
 
