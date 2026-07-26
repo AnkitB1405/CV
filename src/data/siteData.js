@@ -49,7 +49,7 @@ export const projects = [
       'Self-hosted infrastructure lab built for Docker Compose workloads, Samba-backed storage, secure Tailscale access, and isolated cybersecurity testing on a resource-conscious Linux setup. Used to run practical services like Immich and Heimdall while supporting hands-on Linux administration, networking, and lab-based security experimentation.',
     description:
       'A continuously evolving homelab used to practice infrastructure engineering, self-hosting, container operations, and security experimentation through real services that support both daily use and controlled testing.',
-    technologies: ['Docker', 'Portainer', 'Tailscale', 'Samba', 'Immich'],
+    technologies: ['Linux', 'Docker', 'Networking', 'Tailscale'],
     detailSections: [
       {
         heading: 'Overview',
@@ -144,7 +144,7 @@ export const projects = [
       'Cyber deception environment designed to attract hostile interaction, capture attacker telemetry from honeypot activity, and feed security events into a Wazuh-based monitoring and analysis workflow. Built to study reconnaissance, intrusion attempts, and adversary behavior through controlled exposure and centralized log visibility.',
     description:
       'An in-progress security project focused on using controlled deception infrastructure to observe attacker behavior, generate actionable telemetry, and study how adversarial activity can be surfaced through centralized monitoring.',
-    technologies: ['Honeypots', 'Wazuh', 'Telemetry', 'Detection Engineering', 'SOC Analysis'],
+    technologies: ['Detection Engineering', 'Honeypots', 'Wazuh', 'SIEM'],
     detailSections: [
       {
         heading: 'Overview',
@@ -211,7 +211,7 @@ export const projects = [
       'Lightweight log-analysis and detection engine for Linux that normalizes system logs into a common event schema and runs rule-based detectors over the stream — brute force, service anomalies, credential compromise, distributed behaviour, and short-session anomalies — with tiered severity. Being built toward a small-scale SIEM-like platform with dashboards and Graphify integration.',
     description:
       'An in-progress detection-engineering project that parses Linux logs into normalized events and runs a rule-based engine to surface suspicious SSH activity, building toward a small-scale SIEM with alerting and visual analytics.',
-    technologies: ['Python', 'Detection Engineering', 'Log Parsing', 'SIEM', 'Threat Detection'],
+    technologies: ['Python', 'Linux', 'Detection Engineering', 'Log Parsing', 'SIEM'],
     detailSections: [
       {
         heading: 'Overview',
@@ -275,7 +275,7 @@ export const projects = [
       'Distributed telemetry pipeline for collecting endpoint data over UDP and TLS, measuring delivery reliability, and building toward centralized observability, transport analysis, and future dashboard visibility. Focused on lightweight client-server collection, secure transport design, and understanding how telemetry systems behave under real network conditions.',
     description:
       'A systems project centered on understanding telemetry collection end to end, from lightweight data generation on distributed clients to secure transport, aggregation, and analysis on the server side.',
-    technologies: ['Client-Server', 'UDP', 'TLS', 'Telemetry Analysis', 'Observability'],
+    technologies: ['Python', 'Networking', 'TLS', 'Observability'],
     detailSections: [
       {
         heading: 'Overview',
@@ -339,7 +339,7 @@ export const projects = [
       'Local computer-vision app that screens Corn and Grape leaf images using three custom YOLOv5 models, routing each upload through crop identification, disease classification with confidence thresholds, bounding-box annotation, and practical management recommendations. Built as an offline screening prototype with a Streamlit interface and a tested decision pipeline.',
     description:
       'A computer-vision screening tool that identifies the crop in a leaf photo, detects supported diseases with custom YOLOv5 models, and returns annotated results with confidence scores and management guidance.',
-    technologies: ['Python', 'YOLOv5', 'PyTorch', 'Computer Vision', 'Streamlit'],
+    technologies: ['Python', 'Computer Vision', 'YOLOv5', 'PyTorch'],
     detailSections: [
       {
         heading: 'Overview',
