@@ -411,25 +411,19 @@ export const experiments = [
 
 export const experiences = [
   {
-    period: '2024 - Present',
-    title: 'Member',
-    organization: 'LAYER8, PES University',
-    details:
-      'Participating in cybersecurity-focused activities, collaborative learning sessions, and practical security exploration with peers.'
-  },
-  {
-    period: '2024 - Present',
-    title: 'CTF Learner',
-    organization: 'Independent Practice',
-    details:
-      'Regularly solving Capture The Flag challenges to strengthen practical skills in system security, analysis, and problem solving.'
-  },
-  {
-    period: '2024 - Present',
-    title: 'Homelab Practitioner',
-    organization: 'Personal Lab Environment',
-    details:
-      'Building and maintaining self-hosted environments for networking experiments, containerized services, and workflow automation.'
+    organization: 'Bluebenz Digitizations Pvt. Ltd.',
+    role: 'Machine Learning Intern',
+    period: '08 Jun — 07 Jul 2026',
+    kind: 'Internship · 1 month',
+    summary:
+      'A month-long industry internship in applied computer vision, working under the supervision of Saurabh Paunikar. The engagement shipped an end-to-end crop disease screening prototype: a field photograph goes in, the crop is identified, the matching disease model runs, and a non-technical user gets an annotated readout back.',
+    highlights: [
+      'Trained and chained three custom YOLOv5 models — a crop detector feeding dedicated Corn and Grape disease models — so a single upload resolves crop type before any diagnosis is attempted.',
+      'Wrote the routing and confidence logic that decides which disease model to trust, with thresholds and safe fallbacks so low-certainty frames are never reported as a confident diagnosis.',
+      'Delivered the pipeline behind a Streamlit interface with bounding-box annotation and per-disease management recommendations, turning raw model output into an actionable result.'
+    ],
+    supervisor: 'Saurabh Paunikar',
+    project: { slug: 'crop-disease-detection', label: 'Crop Disease Detection' }
   }
 ];
 
